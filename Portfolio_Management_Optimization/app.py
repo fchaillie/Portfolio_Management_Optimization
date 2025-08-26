@@ -10,6 +10,8 @@ import pandas as pd
 import streamlit as st
 import yfinance as yf
 from plotly import graph_objects as go
+import matplotlib.pyplot as plt
+import matplotlib.ticker as ticker
 
 from pypfopt.expected_returns import mean_historical_return
 from pypfopt.risk_models import CovarianceShrinkage
@@ -30,13 +32,38 @@ except Exception:
     HAS_RISKFOLIO = False
 
 # ---------- Page ----------
-st.set_page_config(page_title="Portfolio Optimization & Risk (Long-only)", page_icon="📊", layout="wide")
+# st.set_page_config(page_title="Design your investment strategy", page_icon="📊", layout="wide")
 
 st.markdown("""
 <style>
-/* Force table header text to black */
-thead tr th {
+.block-container {
+    transform: translateY(-72px); /* Pull everything up */
+}
+</style>
+""", unsafe_allow_html=True)
+
+st.markdown("""
+<style>
+/* Shrink left and right margins of main content */
+.block-container {
+    padding-left: 1rem !important;
+    padding-right: 1rem !important;
+    max-width: 100% !important;
+    width: 100% !important;
+}
+</style>
+""", unsafe_allow_html=True)
+
+st.markdown("""
+<style>
+/* Streamlit tables: make all column headers black + bold */
+div[data-testid="stTable"] th {
     color: black !important;
+    font-weight: 700 !important;
+}
+div[data-testid="stDataFrame"] th {
+    color: black !important;
+    font-weight: 700 !important;
 }
 </style>
 """, unsafe_allow_html=True)
@@ -50,6 +77,32 @@ st.markdown("""
   /* Pull main content to the very top */
   .block-container { padding-top: 0 !important; margin-top: 0 !important; }
   .block-container > div:first-child { margin-top: 0 !important; padding-top: 0 !important; }
+</style>
+""", unsafe_allow_html=True)
+
+st.markdown("""
+<style>
+/* Reduce space below subheaders (h2/h3) */
+h2, h3 {
+    margin-bottom: 4px !important;
+}
+
+/* Remove extra margin above Plotly charts */
+.element-container:has(div[data-testid="stPlotlyChart"]) {
+    margin-top: 0px !important;
+}
+</style>
+""", unsafe_allow_html=True)
+
+st.markdown("""
+<style>
+/* Hide the top-right overflow menu of st.dataframe */
+[data-testid="stDataFrameContainer"] .row-widget.stButton {
+    display: none !important;
+}
+[data-testid="stDataFrameContainer"] .stActionButton {
+    display: none !important;
+}
 </style>
 """, unsafe_allow_html=True)
 
@@ -71,9 +124,9 @@ def _inject_bg_css(b64: str, overlay_rgba="rgba(0,0,0,0.10)", blur_px=0):
 
     /* Titres : rectangles blancs bords droits (compact) */
     h1, h2, h3 {{
-      color:#000 !important; background:#fff !important; padding:6px 10px;
+      color:#000 !important; background:#fff !important; padding:6px 2px;
       border-radius:0px; display:inline-block; box-shadow:0 2px 6px rgba(0,0,0,0.06);
-      margin:6px 0 8px 0;
+      margin:2px 0 2px 0;
     }}
 
     /* Tables opaques et compactes */
@@ -211,7 +264,7 @@ def mc_stats_only(returns, weights, n_paths=200, horizon_days=21, seed=42, rebal
     }
 
 def backtest(prices, weights, freq="M", txn_cost_bps=0.0):
-    pts = prices.resample("M" if freq=="M" else "Q").last().index
+    pts = prices.resample("M" if freq=="ME" else "QE").last().index
     w_t = pd.Series({k:float(v) for k,v in weights.items()}, index=prices.columns).fillna(0.0)
     eq_t=1.0; eq_b=1.0; w=w_t.copy(); bh=(eq_b*w_t)/prices.iloc[0]
     rows_t=[]; rows_b=[]
@@ -254,23 +307,23 @@ def cb_remove():
     st.session_state["to_remove"] = "(none)"
 
 # ---------- UI (Sidebar) ----------
+
 st.markdown("""
-<div style="
-    background-color: white;
-    padding: 18px 40px;
-    font-size: 2.5rem;
-    font-weight: bold;
-    border-radius: 0px;
-    box-shadow: 0 2px 6px rgba(0,0,0,0.06);
-    display: inline-block;
-    margin-top: 0;
-">
-📊 Portfolio Optimization & Risk (Long-only)
+<div style="text-align: center;">
+    <div style="
+        background-color: #D0F0C0;
+        padding: 18px 40px;
+        font-size: 2.5rem;
+        font-weight: bold;
+        border-radius: 0px;
+        box-shadow: 0 2px 6px rgba(0,0,0,0.06);
+        display: inline-block;
+        margin-top: 0;
+    ">
+    Design your investment strategy !
+    </div>
 </div>
 """, unsafe_allow_html=True)
-
-st.caption("Not investment advice. Data: Yahoo Finance.")
-
 
 # CSS: remove sidebar header/arrow + pull content further up
 st.markdown("""
@@ -327,18 +380,18 @@ with st.sidebar:
     # --- Dates (tight two columns) ---
     d1, d2 = st.columns(2, gap="small")
     with d1:
-        start_date = st.date_input("Start date", value=date.today() - timedelta(days=365*3))
+        start_date = st.date_input("Optimization Backtest Start date", value=date.today() - timedelta(days=365*3))
     with d2:
-        end_date = st.date_input("End date", value=date.today())
+        end_date = st.date_input("Optimization Backtest End date", value=date.today())
 
     # --- Optimization ---
     o1, o2 = st.columns(2, gap="small")
     with o1:
-        modes = ["Max Sharpe (MV)", "Min Volatility (MV)"]
+        modes = ["Max Sharpe Ratio", "Min Volatility"]
         if HAS_CVXPY:
-            modes += ["Target Volatility (MV, cvxpy)", "Min CVaR (cvxpy)"]
+            modes += ["Target Volatility", "Min Conditional VaR"]
         if HAS_RISKFOLIO:
-            modes += ["HRP (Riskfolio)"]
+            modes += ["Hierarchical Risk Parity"]
         opt_mode = st.selectbox("Optimization mode", modes)
         risk_free_rate = st.number_input("Risk-free rate (annual)", 0.0, 0.2, 0.01, 0.005, format="%.3f")
 
@@ -347,19 +400,19 @@ with st.sidebar:
     with o2:
         max_w_asset = st.slider("Max weight per asset", 0.05, 1.0, 1.0, 0.05)
         target_vol   = st.slider("Target volatility (annualized)", 0.05, 0.40, 0.15, 0.01)
-        beta_cvar    = st.slider("CVaR beta (confidence)", 0.80, 0.99, 0.95, 0.01)
+        beta_cvar    = st.slider("VaR/CVaR confidence level", 0.80, 0.99, 0.95, 0.01)
 
     # --- Monte Carlo & Costs (MC horizon left, Txn cost right) ---
     m1, m2 = st.columns(2, gap="small")
     with m1:
         mc_choice = st.selectbox(
-            "Monte Carlo horizon",
+            "Investment horizon",
             ["Monthly", "Quarterly", "Annual"],
             index=0
         )
-        horizon = {"Monthly": 21, "Quarterly": 63, "Annual": 252}[mc_choice]
+        horizon = {"Monthly": 1, "Quarterly": 3, "Annual": 12}[mc_choice]
     with m2:
-        txn_cost_bps = st.slider("Transaction cost (bps per turnover)", 0.0, 50.0, 5.0, 0.5)
+        txn_cost_bps = st.slider("Transaction cost (bps per rebalancing)", 0.0, 50.0, 5.0, 0.5)
 
     # Derived settings (unchanged)
     mc_rebal_days = 21 if rebal_choice == "Monthly" else 63
@@ -383,17 +436,17 @@ if run_btn:
             st.error("Not enough clean return data after filtering."); st.stop()
 
         try:
-            if opt_mode=="Max Sharpe (MV)":
+            if opt_mode=="Max Sharpe Ratio":
                 weights = optimize_mv(rets, "max_sharpe", rfr=risk_free_rate, max_w=max_w_asset)
-            elif opt_mode=="Min Volatility (MV)":
+            elif opt_mode=="Min Volatility":
                 weights = optimize_mv(rets, "min_volatility", rfr=risk_free_rate, max_w=max_w_asset)
-            elif opt_mode=="Target Volatility (MV, cvxpy)":
+            elif opt_mode=="Target Volatility":
                 if not HAS_CVXPY: st.error("cvxpy not installed."); st.stop()
                 weights = optimize_target_vol(rets, target_vol=target_vol, max_w=max_w_asset)
-            elif opt_mode=="Min CVaR (cvxpy)":
+            elif opt_mode=="Min Conditional VaR":
                 if not HAS_CVXPY: st.error("cvxpy not installed."); st.stop()
                 weights = optimize_min_cvar(rets, beta=beta_cvar, max_w=max_w_asset)
-            elif opt_mode=="HRP (Riskfolio)":
+            elif opt_mode=="Hierarchical Risk Parity":
                 if not HAS_RISKFOLIO: st.error("riskfolio-lib not installed."); st.stop()
                 weights = optimize_hrp(rets)
         except Exception as e:
@@ -418,19 +471,30 @@ res = st.session_state.results
 if res is None:
     st.markdown("""
     <div style="
-    background-color: white;
-    padding: 10px 15px;
-    font-size: 1.2rem;
-    font-weight: bold;
-    color: black;
-    border-radius: 0px;
-    box-shadow: 0 2px 6px rgba(0,0,0,0.06);
-    display: inline-block;
-    margin-top: 10px;
+        display: flex;
+        justify-content: center;
+        margin-top: 10px;
     ">
-    Enter your tickers, choose your options then click "Run analysis" to find your optimized portfolio !
+    <div style="
+        background-color: yellow;
+        padding: 20px;
+        font-size: 1.6rem;
+        font-weight: bold;
+        color: black;
+        border-radius: 20px;
+        box-shadow: 0 2px 6px rgba(0,0,0,0.06);
+        text-align: left;
+        white-space: nowrap;
+        display: table;
+    ">
+        1) Enter the tickers of the stocks you're open to invest in<br> 
+        2) Choose your objectives, risk appetite and investment horizon<br> 
+        3) Click "Run analysis"<br>
+        4) Get your customized stock portfolio !
+    </div>
     </div>
     """, unsafe_allow_html=True)
+
 else:
     prices, frontier, weights = res["prices"], res["frontier"], res["weights"]
     metrics, vr, mc_stats     = res["metrics"], res["vr"], res["mc_stats"]
@@ -439,59 +503,329 @@ else:
 
     col1, col2 = st.columns([3,2], gap="large")
     with col1:
-        st.subheader("Adjusted Close Prices")
+
+        st.markdown("""
+        <div style="
+            background: white;
+            padding: 4px 12px;
+            margin: 4px 0 12px 0;
+            text-align: center;
+            font-size: 1.4rem;
+            font-weight: bold;
+            color: black;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.06);
+            border-radius: 0px;
+        ">
+        Starting Portfolio Backtest
+        </div>
+        """, unsafe_allow_html=True)
         fig = go.Figure()
         for c in prices.columns:
             fig.add_trace(go.Scatter(x=prices.index, y=prices[c], mode="lines", name=c))
-        fig.update_layout(xaxis_title="Date", yaxis_title="Price")
-        st.plotly_chart(fig, use_container_width=True)
+        fig.update_layout(xaxis_title="Date", yaxis_title="Price",margin=dict(t=10, b=40, l=60, r=20))
+        st.plotly_chart(fig, use_container_width=True, config={"displayModeBar": False})
 
-        st.subheader("Efficient Frontier (50 samples)")
+        st.markdown("""
+        <div style="
+            background: white;
+            padding: 4px 12px;
+            margin: 4px 0 12px 0;
+            text-align: center;
+            font-size: 1.4rem;
+            font-weight: bold;
+            color: black;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.06);
+            border-radius: 0px;
+        ">
+        Efficient Frontier (50 samples)
+        </div>
+        """, unsafe_allow_html=True)
+
         fig2 = go.Figure()
-        fig2.add_trace(go.Scatter(x=frontier["vol"], y=frontier["ret"], mode="markers", name="Frontier samples"))
-        fig2.update_layout(xaxis_title="Volatility (annualized)", yaxis_title="Return (annualized)")
-        st.plotly_chart(fig2, use_container_width=True)
+
+        # Add frontier points
+        fig2.add_trace(
+            go.Scatter(
+                x=frontier["vol"] * 100,
+                y=frontier["ret"] * 100,
+                mode="markers",
+                name="Frontier samples"
+            )
+        )
+
+
+        # Configure layout
+        fig2.update_layout(
+            xaxis_title="Volatility (annualized, %)",
+            yaxis_title="Return (annualized, %)",
+            margin=dict(t=10, b=40, l=60, r=20),
+            xaxis=dict(
+                tickformat=".0f",
+                showgrid=True,
+                dtick=5,
+                zeroline=False,
+                zerolinewidth=1,
+                zerolinecolor="black"
+            ),
+            yaxis=dict(
+                tickformat=".0f",
+                showgrid=True,
+                dtick=20,
+                range=[0, max(100, (frontier["ret"].max() * 100) + 10)],  # dynamic upper range
+                zeroline=True,
+                zerolinewidth=1,
+                zerolinecolor="black"
+            ),
+            plot_bgcolor="white"
+        )
+
+        st.plotly_chart(fig2, use_container_width=True, config={"displayModeBar": False})
 
     with col2:
-        st.subheader("Optimal Weights")
 
-        # Clean weights table: Ticker | Weight (%), sorted descending
-        dfw = (
-            pd.DataFrame.from_dict(weights, orient="index", columns=["Weight"])
-            .rename_axis("Ticker")
-            .reset_index()
-            .sort_values("Weight", ascending=False)
-        )
-        dfw["Weight"] = (dfw["Weight"] * 100).map(lambda x: f"{x:.2f}%")
+        st.markdown("""
+        <div style="
+            background: white;
+            padding: 4px 12px;
+            margin: 4px 0 12px 0;
+            text-align: center;
+            font-size: 1.4rem;
+            font-weight: bold;
+            color: black;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.06);
+            border-radius: 0px;
+        ">
+        Optimized Portfolio Weights
+        </div>
+        """, unsafe_allow_html=True)
 
-        # Rename columns with bold markdown
-        dfw = dfw.rename(columns={"Ticker": "**Ticker**", "Weight": "**Weight**"})
+        # dfw = (
+        #     pd.DataFrame.from_dict(weights, orient="index", columns=["Weight"])
+        #         .rename_axis("Ticker")
+        #         .reset_index()
+        #         .sort_values("Weight", ascending=False)
+        # )
+        # dfw["Weight"] = (dfw["Weight"] * 100).map(lambda x: f"{x:.1f}%")
+        # dfw = dfw.rename(columns={"Ticker": "Ticker", "Weight": "Weight"})
 
-        st.table(dfw)
+        # # Hide the left index column
+        # st.dataframe(dfw, use_container_width=True, hide_index=True)
 
-    st.subheader("Summary Metrics")
-    fp = lambda x: f"{x:.2%}"
+
+
+
+        # --- Optimal Weights Table (fixed) ---
+
+        # Ensure weights is defined (from optimization step)
+        if isinstance(weights, pd.Series):
+            weights_df = weights.reset_index()
+            weights_df.columns = ['Ticker', 'Weight']
+        elif isinstance(weights, dict):
+            weights_df = pd.DataFrame(list(weights.items()), columns=['Ticker', 'Weight'])
+        else:
+            st.warning("⚠️ No weights found. Please run the analysis.")
+            weights_df = pd.DataFrame(columns=['Ticker', 'Weight'])
+
+        # Remove zero weights (optional)
+        weights_df = weights_df[weights_df['Weight'] > 0]
+        weights_df['Weight'] = (weights_df['Weight'] * 100).round(1).astype(str) + '%'
+
+        # Only display if non-empty
+        if not weights_df.empty:
+            # Table styling
+            st.markdown("""
+                <style>
+                .custom-table table {
+                    width: 100%;
+                    border-collapse: collapse;
+                }
+                .custom-table th, .custom-table td {
+                    text-align: center;
+                    padding: 4px 8px;
+                }
+                </style>
+            """, unsafe_allow_html=True)
+
+            # Render as styled HTML
+            st.markdown(f"""
+                <div class="custom-table" style="
+                    background-color: white;
+                    padding: 0;
+                    border-radius: 0px;
+                    box-shadow: 0 2px 8px rgba(0,0,0,0.10);
+                    font-size: 1.3rem;
+                    margin-bottom: 8px;">
+                    {weights_df.to_html(index=False, border=0)}
+                </div>
+            """, unsafe_allow_html=True)
+        else:
+            st.warning("⚠️ No optimal weights to display. Please run the analysis.")
+
+
+
+
+    st.markdown("""
+    <div style="
+        background: white;
+        padding: 4px 12px;
+        margin: 4px 0 12px 0;
+        text-align: center;
+        font-size: 1.4rem;
+        font-weight: bold;
+        color: black;
+        box-shadow: 0 2px 6px rgba(0,0,0,0.06);
+        border-radius: 0px;
+    ">
+    Optimized Portfolio Metrics
+    </div>
+    """, unsafe_allow_html=True)
+
+    fp = lambda x: f"{x:.1%}"
     left  = [("Annualized Return", fp(metrics["ann_return"])),
              ("Annualized Volatility", fp(metrics["ann_vol"])),
              ("Sharpe Ratio", f"{metrics['sharpe']:.2f}"),
              ("Daily VaR (95%)", fp(vr["VaR"])),
              ("Daily CVaR (95%)", fp(vr["CVaR"]))]
 
-    right = [(f"MC p5 (horizon {horizon}d)",  fp(mc_stats["p5"])),
-             (f"MC p50 (horizon {horizon}d)", fp(mc_stats["p50"])),
-             (f"MC p95 (horizon {horizon}d)", fp(mc_stats["p95"])),
-             (f"MC mean (horizon {horizon}d)", fp(mc_stats["mean"])),
-             (f"MC std (horizon {horizon}d)",  fp(mc_stats["std"])),
-             (f"Backtest Total Return (Target, {rebal_choice})", fp(summ_bt["TotalReturn_Target"])),
+    right = [(f"Monte Carlo simulations return p. 5% ({horizon} Month)",  fp(mc_stats["p5"])),
+             (f"Monte Carlo simulations return p. 50 % ({horizon} Month)", fp(mc_stats["p50"])),
+             (f"Monte Carlo simulations return p. 95 % ({horizon} Month)", fp(mc_stats["p95"])),
+             (f"Monte Carlo simulations average return ({horizon} Month)", fp(mc_stats["mean"])),
+             (f"Monte Carlo simulations std ({horizon} Month)",  fp(mc_stats["std"])),
+             (f"Backtest Total Return (Target, {rebal_choice} rebalancing)", fp(summ_bt["TotalReturn_Target"])),
              ("Backtest Total Return (Buy & Hold)", fp(summ_bt["TotalReturn_BuyHold"]))]
 
     cL, cR = st.columns(2)
-    with cL: st.table(pd.DataFrame(left, columns=["Metric","Value"]))
-    with cR: st.table(pd.DataFrame(right, columns=["Metric","Value"]))
+    # with cL:
+    #     st.dataframe(pd.DataFrame(left, columns=["Metric","Value"]), use_container_width=True, hide_index=True)
+    # with cR:
+    #     st.dataframe(pd.DataFrame(right, columns=["Metric","Value"]), use_container_width=True, hide_index=True)
+    # with cL:
+    #     table_left = pd.DataFrame(left, columns=["Metric", "Value"])
+    #     st.markdown("""
+    #         <div style="
+    #             background-color: white;
+    #             padding: 0 0 0 0;
+    #             border-radius: 0px;
+    #             box-shadow: 0 2px 8px rgba(0,0,0,0.10);
+    #             font-size: 1rem;
+    #             margin-bottom: 8px;
+    #         ">
+    #         """ + table_left.to_html(index=False, border=0) + "</div>",
+    #         unsafe_allow_html=True
+    #     )
 
-    st.subheader(f"Backtest: Target (rebalance {rebal_choice}) vs Buy & Hold")
+    with cL:
+        table_left = pd.DataFrame(left, columns=["Metric", "Value"])
+
+        # Inject custom CSS for centering + full width
+        st.markdown(
+            """
+            <style>
+            .custom-table table {
+                width: 100%;
+                border-collapse: collapse;
+            }
+            .custom-table th, .custom-table td {
+                text-align: center;
+                padding: 4px 8px;
+            }
+            </style>
+            """,
+            unsafe_allow_html=True,
+        )
+
+        # Display styled table without index, centered in white box
+        st.markdown(
+            f"""
+            <div class="custom-table" style="
+                background-color: white;
+                padding: 0;
+                border-radius: 0px;
+                box-shadow: 0 2px 8px rgba(0,0,0,0.10);
+                font-size: 1.1rem;
+                margin-bottom: 8px;
+            ">
+                {table_left.to_html(index=False, border=0)}
+            </div>
+            """,
+            unsafe_allow_html=True,
+        )
+
+    with cR:
+        table_right = pd.DataFrame(right, columns=["Metric", "Value"])
+
+        # Inject same style if not already done
+        st.markdown(
+            """
+            <style>
+            .custom-table table {
+                width: 100%;
+                border-collapse: collapse;
+            }
+            .custom-table th, .custom-table td {
+                text-align: center;
+                padding: 4px 8px;
+            }
+            </style>
+            """,
+            unsafe_allow_html=True,
+        )
+
+        # Display styled table without index
+        st.markdown(
+            f"""
+            <div class="custom-table" style="
+                background-color: white;
+                padding: 0;
+                border-radius: 0px;
+                box-shadow: 0 2px 8px rgba(0,0,0,0.10);
+                font-size: 1.1rem;
+                margin-bottom: 8px;
+            ">
+                {table_right.to_html(index=False, border=0)}
+            </div>
+            """,
+            unsafe_allow_html=True,
+        )
+
+    st.markdown("""
+    <div style="
+        background: white;
+        padding: 4px 12px;
+        margin: 4px 0 12px 0;
+        text-align: center;
+        font-size: 1.4rem;
+        font-weight: bold;
+        color: black;
+        box-shadow: 0 2px 6px rgba(0,0,0,0.06);
+        border-radius: 0px;
+    ">
+    Backtest: Target vs Buy & Hold
+    </div>
+    """, unsafe_allow_html=True)
+
     eq_fig = go.Figure()
     for col in eq_bt.columns:
         eq_fig.add_trace(go.Scatter(x=eq_bt.index, y=eq_bt[col], mode="lines", name=col))
     eq_fig.update_layout(xaxis_title="Date", yaxis_title="Equity")
     st.plotly_chart(eq_fig, use_container_width=True)
+
+# Pinned disclaimer at the bottom of the screen
+st.markdown("""
+<div style='
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    background-color: black;
+    color: white;
+    padding: 10px 20px;
+    font-weight: bold;
+    font-size: 0.9rem;
+    z-index: 9999;
+    text-align: center;
+'>
+This site does not give investment advice. Past performances don't represent future performances. <br>Data Source: Yahoo Finance.
+</div>
+""", unsafe_allow_html=True)
