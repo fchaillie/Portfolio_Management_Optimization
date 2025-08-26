@@ -12,6 +12,7 @@ import yfinance as yf
 from plotly import graph_objects as go
 import matplotlib.pyplot as plt
 import matplotlib.ticker as ticker
+import math
 
 from pypfopt.expected_returns import mean_historical_return
 from pypfopt.risk_models import CovarianceShrinkage
@@ -277,10 +278,10 @@ def backtest(prices, weights, freq="M", txn_cost_bps=0.0):
             turn=(w_t-w).abs().sum(); eq_t *= (1 - turn*txn_cost_bps/10000); w=w_t.copy()
         rows_t.append((prices.index[t],eq_t)); rows_b.append((prices.index[t],eq_b))
     df_t = pd.DataFrame(rows_t, columns=["date","Target"]).set_index("date")
-    df_b = pd.DataFrame(rows_b, columns=["date","BuyHold"]).set_index("date")
+    df_b = pd.DataFrame(rows_b, columns=["date","Buy & Hold"]).set_index("date")
     eq = df_t.join(df_b, how="outer")
     summ = {"TotalReturn_Target": float(eq["Target"].iloc[-1]/eq["Target"].iloc[0]-1),
-            "TotalReturn_BuyHold": float(eq["BuyHold"].iloc[-1]/eq["BuyHold"].iloc[0]-1)}
+            "TotalReturn_Buy&Hold": float(eq["Buy & Hold"].iloc[-1]/eq["Buy & Hold"].iloc[0]-1)}
     return eq, summ
 
 # ---------- Callbacks ----------
@@ -693,7 +694,7 @@ else:
              (f"Monte Carlo simulations average return ({horizon} Month)", fp(mc_stats["mean"])),
              (f"Monte Carlo simulations std ({horizon} Month)",  fp(mc_stats["std"])),
              (f"Backtest Total Return (Target, {rebal_choice} rebalancing)", fp(summ_bt["TotalReturn_Target"])),
-             ("Backtest Total Return (Buy & Hold)", fp(summ_bt["TotalReturn_BuyHold"]))]
+             ("Backtest Total Return (Buy & Hold)", fp(summ_bt["TotalReturn_Buy&Hold"]))]
 
     cL, cR = st.columns(2)
     # with cL:
@@ -805,11 +806,62 @@ else:
     </div>
     """, unsafe_allow_html=True)
 
-    eq_fig = go.Figure()
-    for col in eq_bt.columns:
-        eq_fig.add_trace(go.Scatter(x=eq_bt.index, y=eq_bt[col], mode="lines", name=col))
-    eq_fig.update_layout(xaxis_title="Date", yaxis_title="Equity")
-    st.plotly_chart(eq_fig, use_container_width=True, config={"displayModeBar": False})
+    # eq_fig = go.Figure()
+    # for col in eq_bt.columns:
+    #     eq_fig.add_trace(go.Scatter(x=eq_bt.index, y=eq_bt[col], mode="lines", name=col))
+    # eq_fig.update_layout(
+    # xaxis_title="Date",
+    # yaxis_title="Performance",
+    # yaxis=dict(
+    #     tickformat=".0f",    # Show full numbers (no decimals)
+    #     range=[0, None],     # Start Y-axis at 0
+    #     showgrid=True)
+    # )
+    # st.plotly_chart(eq_fig, use_container_width=True, config={"displayModeBar": False})
+
+    # ---- Plot the Equity Curves ----
+    fig = go.Figure()
+
+    # Plot Target (Optimized with rebalancing)
+    fig.add_trace(go.Scatter(
+        x=eq_bt.index,
+        y=eq_bt["Target"] * 100,
+        mode="lines",
+        name="Target (Rebalanced)"
+    ))
+
+    # Plot Buy & Hold
+    fig.add_trace(go.Scatter(
+        x=eq_bt.index,
+        y=eq_bt["Buy & Hold"] * 100,
+        mode="lines",
+        name="Buy & Hold"
+    ))
+
+    y_max = math.ceil(eq_bt.max().max() * 100 / 100.0) * 100
+
+    fig.update_layout(
+        xaxis_title="Date",
+        yaxis_title="Equity Value Base 100",
+        yaxis=dict(
+            range=[0, y_max],
+            tickvals=list(range(0, y_max + 100, 100)),
+            tickformat=".0f",
+            showgrid=True,
+            zeroline=True,
+            zerolinewidth=1,
+            zerolinecolor="black",
+            title=dict(
+                text="Equity value (base 100)",
+                standoff=10,  # distance from axis
+                font=dict(size=14)
+            )
+        ),
+        margin=dict(t=10, b=40, l=60, r=20),
+        showlegend=True
+    )
+
+    st.plotly_chart(fig, use_container_width=True, config={"displayModeBar": False})
 
 # Pinned disclaimer at the bottom of the screen
 st.markdown("""
