@@ -809,7 +809,7 @@ else:
     for col in eq_bt.columns:
         eq_fig.add_trace(go.Scatter(x=eq_bt.index, y=eq_bt[col], mode="lines", name=col))
     eq_fig.update_layout(xaxis_title="Date", yaxis_title="Equity")
-    st.plotly_chart(eq_fig, use_container_width=True)
+    st.plotly_chart(eq_fig, use_container_width=True, config={"displayModeBar": False})
 
 # Pinned disclaimer at the bottom of the screen
 st.markdown("""
