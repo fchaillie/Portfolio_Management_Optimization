@@ -526,61 +526,61 @@ else:
         fig.update_layout(xaxis_title="Date", yaxis_title="Price",margin=dict(t=10, b=40, l=60, r=20))
         st.plotly_chart(fig, use_container_width=True, config={"displayModeBar": False})
 
-        st.markdown("""
-        <div style="
-            background: white;
-            padding: 4px 12px;
-            margin: 4px 0 12px 0;
-            text-align: center;
-            font-size: 1.4rem;
-            font-weight: bold;
-            color: black;
-            box-shadow: 0 2px 6px rgba(0,0,0,0.06);
-            border-radius: 0px;
-        ">
-        Efficient Frontier (50 samples)
-        </div>
-        """, unsafe_allow_html=True)
+        # st.markdown("""
+        # <div style="
+        #     background: white;
+        #     padding: 4px 12px;
+        #     margin: 4px 0 12px 0;
+        #     text-align: center;
+        #     font-size: 1.4rem;
+        #     font-weight: bold;
+        #     color: black;
+        #     box-shadow: 0 2px 6px rgba(0,0,0,0.06);
+        #     border-radius: 0px;
+        # ">
+        # Efficient Frontier (50 samples)
+        # </div>
+        # """, unsafe_allow_html=True)
 
-        fig2 = go.Figure()
+        # fig2 = go.Figure()
 
-        # Add frontier points
-        fig2.add_trace(
-            go.Scatter(
-                x=frontier["vol"] * 100,
-                y=frontier["ret"] * 100,
-                mode="markers",
-                name="Frontier samples"
-            )
-        )
+        # # Add frontier points
+        # fig2.add_trace(
+        #     go.Scatter(
+        #         x=frontier["vol"] * 100,
+        #         y=frontier["ret"] * 100,
+        #         mode="markers",
+        #         name="Frontier samples"
+        #     )
+        # )
 
 
-        # Configure layout
-        fig2.update_layout(
-            xaxis_title="Volatility (annualized, %)",
-            yaxis_title="Return (annualized, %)",
-            margin=dict(t=10, b=40, l=60, r=20),
-            xaxis=dict(
-                tickformat=".0f",
-                showgrid=True,
-                dtick=5,
-                zeroline=False,
-                zerolinewidth=1,
-                zerolinecolor="black"
-            ),
-            yaxis=dict(
-                tickformat=".0f",
-                showgrid=True,
-                dtick=20,
-                range=[0, max(100, (frontier["ret"].max() * 100) + 10)],  # dynamic upper range
-                zeroline=True,
-                zerolinewidth=1,
-                zerolinecolor="black"
-            ),
-            plot_bgcolor="white"
-        )
+        # # Configure layout
+        # fig2.update_layout(
+        #     xaxis_title="Volatility (annualized, %)",
+        #     yaxis_title="Return (annualized, %)",
+        #     margin=dict(t=10, b=40, l=60, r=20),
+        #     xaxis=dict(
+        #         tickformat=".0f",
+        #         showgrid=True,
+        #         dtick=5,
+        #         zeroline=False,
+        #         zerolinewidth=1,
+        #         zerolinecolor="black"
+        #     ),
+        #     yaxis=dict(
+        #         tickformat=".0f",
+        #         showgrid=True,
+        #         dtick=20,
+        #         range=[0, max(100, (frontier["ret"].max() * 100) + 10)],  # dynamic upper range
+        #         zeroline=True,
+        #         zerolinewidth=1,
+        #         zerolinecolor="black"
+        #     ),
+        #     plot_bgcolor="white"
+        # )
 
-        st.plotly_chart(fig2, use_container_width=True, config={"displayModeBar": False})
+        # st.plotly_chart(fig2, use_container_width=True, config={"displayModeBar": False})
 
     with col2:
 
@@ -599,20 +599,6 @@ else:
         Optimized Portfolio Weights
         </div>
         """, unsafe_allow_html=True)
-
-        # dfw = (
-        #     pd.DataFrame.from_dict(weights, orient="index", columns=["Weight"])
-        #         .rename_axis("Ticker")
-        #         .reset_index()
-        #         .sort_values("Weight", ascending=False)
-        # )
-        # dfw["Weight"] = (dfw["Weight"] * 100).map(lambda x: f"{x:.1f}%")
-        # dfw = dfw.rename(columns={"Ticker": "Ticker", "Weight": "Weight"})
-
-        # # Hide the left index column
-        # st.dataframe(dfw, use_container_width=True, hide_index=True)
-
-
 
 
         # --- Optimal Weights Table (fixed) ---
@@ -655,13 +641,72 @@ else:
                     border-radius: 0px;
                     box-shadow: 0 2px 8px rgba(0,0,0,0.10);
                     font-size: 1.3rem;
-                    margin-bottom: 8px;">
+                    margin-bottom: 8px;
+                    max-height: 360px;
+                    overflow-y: auto;
+                ">
                     {weights_df.to_html(index=False, border=0)}
                 </div>
             """, unsafe_allow_html=True)
         else:
             st.warning("⚠️ No optimal weights to display. Please run the analysis.")
 
+
+    st.markdown("""
+    <div style="
+        background: white;
+        padding: 4px 12px;
+        margin: 4px 0 12px 0;
+        text-align: center;
+        font-size: 1.4rem;
+        font-weight: bold;
+        color: black;
+        box-shadow: 0 2px 6px rgba(0,0,0,0.06);
+        border-radius: 0px;
+    ">
+    Efficient Frontier (50 samples)
+    </div>
+    """, unsafe_allow_html=True)
+
+    fig2 = go.Figure()
+
+    # Add frontier points
+    fig2.add_trace(
+        go.Scatter(
+            x=frontier["vol"] * 100,
+            y=frontier["ret"] * 100,
+            mode="markers",
+            name="Frontier samples"
+        )
+    )
+
+
+    # Configure layout
+    fig2.update_layout(
+        xaxis_title="Annualized volatility in %)",
+        yaxis_title="Annualized return in %)",
+        margin=dict(t=10, b=40, l=60, r=20),
+        xaxis=dict(
+            tickformat=".0f",
+            showgrid=True,
+            dtick=5,
+            zeroline=False,
+            zerolinewidth=1,
+            zerolinecolor="black"
+        ),
+        yaxis=dict(
+            tickformat=".0f",
+            showgrid=True,
+            dtick=20,
+            range=[0, max(100, (frontier["ret"].max() * 100) + 10)],  # dynamic upper range
+            zeroline=True,
+            zerolinewidth=1,
+            zerolinecolor="black"
+        ),
+        plot_bgcolor="white"
+    )
+
+    st.plotly_chart(fig2, use_container_width=True, config={"displayModeBar": False})
 
 
 
