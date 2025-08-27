@@ -11,6 +11,17 @@ from pypfopt.expected_returns import mean_historical_return
 from pypfopt.risk_models import CovarianceShrinkage
 from pypfopt.efficient_frontier import EfficientFrontier
 
+@st.cache_data(show_spinner=False)
+def est_mu_S(returns: pd.DataFrame):
+    """
+    Estimate expected returns (mu) and covariance (S) once, with caching.
+    - mu: historical mean return (compounded) using daily returns.
+    - S : Ledoit–Wolf shrinkage covariance on daily returns.
+    """
+    mu = mean_historical_return(returns, compounding=True, returns_data=True)
+    S  = CovarianceShrinkage(returns, returns_data=True).ledoit_wolf()
+    return mu, S
+
 
 @st.cache_data(show_spinner=False)
 def sample_frontier(returns, n_points=50):
