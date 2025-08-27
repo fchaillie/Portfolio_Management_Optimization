@@ -81,6 +81,20 @@ def inject_global_css_banner_and_disclaimer() -> None:
         [data-testid="stSidebarContent"] > div:first-child{ margin-top:0 !important; padding-top:0 !important; }
         [data-testid="stSidebarContent"] [data-testid="element-container"]{ margin-bottom:6px !important; }
 
+        /* Lock the Tickers textarea size in the sidebar */
+        section[data-testid="stSidebar"] textarea[aria-label="Tickers"]{
+          resize: none !important;      /* remove drag handle */
+          height: 200px !important;     /* keep fixed height */
+          overflow: auto !important;    /* scroll instead of growing */
+        }
+
+        /* === Lock the sidebar: fixed height, no scrolling === */
+        section[data-testid="stSidebar"]{
+          position: sticky;      /* stays put as the page scrolls */
+          top: 0;
+          height: 100vh !important;
+          overflow: hidden !important;  /* disable sidebar scrollbars */
+        }
 
         /* ===== Utility classes for banner & disclaimer ===== */
         .banner{
