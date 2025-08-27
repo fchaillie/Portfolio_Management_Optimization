@@ -1,4 +1,3 @@
-# All the libraries
 streamlit>=1.32
 yfinance>=0.2.36
 numpy>=1.24
@@ -6,3 +5,4 @@ pandas>=2.0
 plotly>=5.20
 matplotlib>=3.7
 PyPortfolioOpt>=1.5
+scikit-learn>=1.4,<1.6
