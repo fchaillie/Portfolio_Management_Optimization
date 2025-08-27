@@ -10,6 +10,7 @@ from pypfopt.expected_returns import mean_historical_return
 from pypfopt.risk_models import CovarianceShrinkage
 from pypfopt.efficient_frontier import EfficientFrontier
 from pypfopt import objective_functions, EfficientCVaR
+import streamlit as st
 
 # Optional dependencies — used to enable certain modes in the UI.
 import importlib.util
