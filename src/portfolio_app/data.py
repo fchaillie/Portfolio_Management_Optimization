@@ -15,7 +15,7 @@ def get_price_data(tickers, start: str, end: str) -> pd.DataFrame:
     Returns a DataFrame of prices (columns=tickers, index=datetime).
     The result is cached by Streamlit for faster reruns.
     """
-    data = yf.download(tickers, start=start, end=end, auto_adjust=True, progress=False)
+    data = yf.download(tickers, start=start, end=end, auto_adjust=True, progress=False, threads=True)
     prices = data["Close"].copy() if isinstance(data, pd.DataFrame) and "Close" in data.columns else pd.DataFrame(data)
 
     # For a single ticker, yfinance returns a 1D series — standardize to DataFrame with the given name.

@@ -11,14 +11,14 @@ from pypfopt.expected_returns import mean_historical_return
 from pypfopt.risk_models import CovarianceShrinkage
 from pypfopt.efficient_frontier import EfficientFrontier
 
+
 @st.cache_data(show_spinner=False)
-def sample_frontier(returns: pd.DataFrame, n_points: int = 50) -> pd.DataFrame:
+def sample_frontier(returns, n_points=50):
     """
     Sample points on the mean-variance frontier by sweeping target returns.
     Returns a DataFrame with columns ['ret', 'vol', 'sharpe'].
     """
-    mu = mean_historical_return(returns, compounding=True, returns_data=True)
-    S  = CovarianceShrinkage(returns, returns_data=True).ledoit_wolf()
+    mu, S = est_mu_S(returns)
     target_returns = np.linspace(float(mu.min()), float(mu.max()), n_points)
     pts = []
     for tr in target_returns:
@@ -28,9 +28,9 @@ def sample_frontier(returns: pd.DataFrame, n_points: int = 50) -> pd.DataFrame:
             r, v, sh = ef.portfolio_performance(risk_free_rate=0.0, verbose=False)
             pts.append({"ret": r, "vol": v, "sharpe": sh})
         except Exception:
-            # Some targets may be infeasible; skip gracefully
             continue
     return pd.DataFrame(pts)
+
 
 def port_metrics(returns: pd.DataFrame, weights: dict, rfr: float = 0.0) -> dict:
     """

@@ -12,6 +12,14 @@ import streamlit as st
 DEFAULT_BG_PATH = "assets/background.jpg"  # expected location for the background image
 DEFAULT_SIDEBAR_WIDTH_PX = 520             # makes the sidebar wide enough for dense controls
 
+@st.cache_resource
+def _bg_b64_cached(img_path: str = DEFAULT_BG_PATH) -> str:
+    """
+    Read and base64-encode the background image ONCE per session.
+    Subsequent calls reuse the cached string (faster reruns).
+    """
+    return base64.b64encode(Path(img_path).read_bytes()).decode()
+
 def inject_global_css_banner_and_disclaimer() -> None:
     """
     Injects a single CSS block (safe to call once at the top of the app) that:
@@ -100,13 +108,15 @@ def inject_global_css_banner_and_disclaimer() -> None:
         """, unsafe_allow_html=True
     )
 
+
 def apply_background_image(path: str = DEFAULT_BG_PATH, overlay_rgba: str = "rgba(0,0,0,0.10)") -> None:
     """
-    Reads an image from `path`, encodes it as base64, and applies it as a fixed full-screen
+    Reads an image from `path` (cached), encodes it as base64, and applies it as a fixed full-screen
     background with a dark overlay. The overlay improves contrast for foreground widgets.
     """
+
     try:
-        b64 = base64.b64encode(Path(path).read_bytes()).decode()
+        b64 = _bg_b64_cached(path)  # cached read (faster on reruns)
     except Exception:
         # Fail silently if the file isn't present; the app still works without a background.
         return

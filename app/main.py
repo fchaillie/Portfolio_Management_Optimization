@@ -26,7 +26,12 @@ from src.portfolio_app.backtest import backtest
 from src.portfolio_app.callbacks import current_list, cb_add, cb_remove
 
 # ---------- One-shot global UI ----------
-st.set_page_config(page_title=__app_name__, page_icon="📊", layout="wide")
+st.set_page_config(
+    page_title="Design your investment strategy",
+    page_icon="📊",
+    layout="wide",
+    initial_sidebar_state="expanded"
+)
 inject_global_css_banner_and_disclaimer()
 apply_background_image()          # looks for assets/background.jpg
 set_sidebar_width(520)            # widen sidebar
@@ -88,6 +93,9 @@ with st.sidebar:
         horizon = {"Monthly": 1, "Quarterly": 3, "Annual": 12}[mc_choice]
     with m2:
         txn_cost_bps = st.slider("Transaction cost (bps per rebalancing)", 0.0, 50.0, 5.0, 0.5)
+    
+    frontier_n = 25
+    mc_paths   = 100
 
     # Derived
     mc_rebal_days = 21 if rebal_choice == "Monthly" else 63
@@ -131,10 +139,10 @@ if run_btn:
 
         # Metrics, frontier, risk, Monte Carlo, and backtest
         metrics  = port_metrics(rets, weights, rfr=risk_free_rate)
-        frontier = sample_frontier(rets, n_points=50)
+        frontier = sample_frontier(rets, n_points=frontier_n)
         vr       = hist_var_cvar(rets, weights, alpha=0.95)
         mc_stats = mc_stats_only(
-            rets, weights, n_paths=200, horizon_days=horizon,
+            rets, weights, n_paths=mc_paths, horizon_days=horizon,
             rebalance_every=mc_rebal_days, txn_cost_bps=txn_cost_bps
         )
         eq_bt, summ_bt = backtest(prices, weights, freq=bt_freq, txn_cost_bps=txn_cost_bps)
@@ -245,7 +253,7 @@ else:
         """
         <div style="background: white; padding: 4px 12px; margin: 4px 0 12px 0; text-align: center;
                     font-size: 1.0rem; font-weight: bold; color: black; box-shadow: 0 2px 6px rgba(0,0,0,0.06);">
-          Efficient Frontier (50 samples)
+          Efficient Frontier (25 samples)
         </div>
         """, unsafe_allow_html=True
     )

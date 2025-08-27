@@ -12,17 +12,15 @@ from pypfopt.efficient_frontier import EfficientFrontier
 from pypfopt import objective_functions, EfficientCVaR
 
 # Optional dependencies — used to enable certain modes in the UI.
-try:
-    import cvxpy as cp
-    HAS_CVXPY = True
-except Exception:
-    HAS_CVXPY = False
+import importlib.util
+HAS_CVXPY = importlib.util.find_spec("cvxpy") is not None
+HAS_RISKFOLIO = importlib.util.find_spec("riskfolio") is not None
 
-try:
-    import riskfolio as rp
-    HAS_RISKFOLIO = True
-except Exception:
-    HAS_RISKFOLIO = False
+@st.cache_data(show_spinner=False)
+def est_mu_S(returns: pd.DataFrame):
+    mu = mean_historical_return(returns, compounding=True, returns_data=True)
+    S  = CovarianceShrinkage(returns, returns_data=True).ledoit_wolf()
+    return mu, S
 
 def _mv_setup(returns: pd.DataFrame, max_w: float) -> EfficientFrontier:
     """
@@ -34,41 +32,42 @@ def _mv_setup(returns: pd.DataFrame, max_w: float) -> EfficientFrontier:
     ef.add_objective(objective_functions.L2_reg, gamma=0.001)
     return ef
 
-def optimize_mv(returns: pd.DataFrame, objective: str = "max_sharpe", rfr: float = 0.01, max_w: float = 1.0) -> dict:
+def optimize_mv(returns, objective="max_sharpe", rfr=0.01, max_w=1.0):
     """
     Mean-variance optimization:
     - objective="max_sharpe"  -> maximize Sharpe ratio given rfr
     - objective="min_volatility" -> minimize total volatility
     Returns a dict of weights.
     """
-    ef = _mv_setup(returns, max_w=max_w)
-    if objective == "max_sharpe":
-        ef.max_sharpe(risk_free_rate=rfr)
-    else:
-        ef.min_volatility()
+    mu, S = est_mu_S(returns)
+    ef = EfficientFrontier(mu, S, weight_bounds=(0.0, float(max_w)))
+    ef.add_objective(objective_functions.L2_reg, gamma=0.001)
+    ef.max_sharpe(risk_free_rate=rfr) if objective=="max_sharpe" else ef.min_volatility()
     return ef.clean_weights(1e-3)
 
-def optimize_target_vol(returns: pd.DataFrame, target_vol: float = 0.15, max_w: float = 1.0) -> dict:
+def optimize_target_vol(returns, target_vol=0.15, max_w=1.0):
     """
     Efficient frontier at a specified volatility target.
     Requires only PyPortfolioOpt (no cvxpy-specific calls used).
     """
-    mu = mean_historical_return(returns, compounding=True, returns_data=True)
-    S  = CovarianceShrinkage(returns, returns_data=True).ledoit_wolf()
+    mu, S = est_mu_S(returns)
     ef = EfficientFrontier(mu, S, weight_bounds=(0.0, float(max_w)))
     ef.efficient_risk(target_volatility=float(target_vol))
     return ef.clean_weights(1e-3)
 
-def optimize_min_cvar(returns: pd.DataFrame, beta: float = 0.95, max_w: float = 1.0) -> dict:
+def optimize_min_cvar(returns, beta=0.95, max_w=1.0):
     """
     Minimize CVaR at confidence level `beta`. Requires cvxpy to be available.
     """
-    if not HAS_CVXPY:
+    if not HAS_CVXPY: 
         raise ImportError("cvxpy not installed")
-    mu = mean_historical_return(returns, compounding=True, returns_data=True)
+    
+    # Lazy import: pay the cost only when this mode is used
+    import cvxpy as cp  # noqa: F401  (import ensures solver presence; not used directly)
+
+    mu, _ = est_mu_S(returns)  # reuse cached mean
     ec = EfficientCVaR(mu, returns, beta=beta, weight_bounds=(0.0, float(max_w)))
-    ec.min_cvar()
-    return ec.clean_weights(1e-3)
+    ec.min_cvar(); return ec.clean_weights(1e-3)
 
 def optimize_hrp(returns: pd.DataFrame) -> dict:
     """
@@ -77,6 +76,10 @@ def optimize_hrp(returns: pd.DataFrame) -> dict:
     """
     if not HAS_RISKFOLIO:
         raise ImportError("riskfolio-lib not installed")
+    
+    # Lazy import: only import when HRP is requested
+    import riskfolio as rp
+
     port = rp.Portfolio(returns=returns)
     port.assets_stats(method_mu='hist', method_cov='ledoit', d=0.94)
     w = port.hrp_optimization(model='Classic', rm='MV')[0].to_dict()
