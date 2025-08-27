@@ -10,7 +10,7 @@ import streamlit as st
 
 # ---- Public constants ----
 DEFAULT_BG_PATH = "assets/background.jpg"  # expected location for the background image
-DEFAULT_SIDEBAR_WIDTH_PX = 520             # makes the sidebar wide enough for dense controls
+DEFAULT_SIDEBAR_WIDTH_PX = 540             # makes the sidebar wide enough for dense controls
 
 @st.cache_resource
 def _bg_b64_cached(img_path: str = DEFAULT_BG_PATH) -> str:
