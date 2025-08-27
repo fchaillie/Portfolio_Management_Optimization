@@ -1,0 +1,90 @@
+# -------------------------
+# OS / File system noise
+# -------------------------
+.DS_Store
+Thumbs.db
+Desktop.ini
+
+# -------------------------
+# Python bytecode & C extensions
+# -------------------------
+__pycache__/
+**/__pycache__/
+*.py[cod]
+*.pyd
+*.pyo
+*.so
+
+# -------------------------
+# Virtual environments & Python managers
+# -------------------------
+.venv/
+venv/
+env/
+ENV/
+.venv*/
+.conda/
+.python-version
+# Local environment files
+.env
+.env.*
+.envrc
+
+# -------------------------
+# Packaging / Build artifacts
+# -------------------------
+build/
+dist/
+*.egg-info/
+.eggs/
+pip-wheel-metadata/
+*.whl
+
+# -------------------------
+# Caches / Coverage / Test
+# -------------------------
+*.log
+.cache/
+.mypy_cache/
+.pytest_cache/
+ruff_cache/
+.pytype/
+.pyre/
+.tox/
+.coverage*
+coverage.xml
+htmlcov/
+.ipynb_checkpoints/
+
+# -------------------------
+# Editors / IDEs
+# -------------------------
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# -------------------------
+# Streamlit (keep config, ignore secrets/caches)
+# -------------------------
+.streamlit/secrets.toml
+.streamlit/credentials.toml
+.streamlit/logs/
+.streamlit/cache/
+# (Optional) keep your config if you add one:
+# !.streamlit/config.toml
+
+# -------------------------
+# Data & Local artifacts
+# -------------------------
+data/
+outputs/
+reports/
+tmp/
+*.sqlite3
+*.db
+
+# Keep the app assets (background, screenshots, logos)
+!assets/**
+# But ignore any large raw dumps inside assets/raw
+assets/raw/**
