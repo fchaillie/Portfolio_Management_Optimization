@@ -1,3 +1,4 @@
+# All the libraries
 streamlit>=1.32
 yfinance>=0.2.36
 numpy>=1.24
