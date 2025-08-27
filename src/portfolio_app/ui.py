@@ -117,9 +117,11 @@ def inject_global_css_banner_and_disclaimer() -> None:
           margin-bottom: 28px; /* space below the main title */
         }
         .disclaimer{
-          position:fixed; bottom:0; left:0; width:100%;
-          background-color:black; color:white; padding:10px 20px; font-weight:bold; font-size:0.9rem;
-          z-index:9999; text-align:center;
+        position: fixed; bottom: 0; left: 520px;                /* shift right by sidebar width */
+        width: calc(100% - 520px);                               /* avoid covering the sidebar */
+        background-color: black; color: white;
+        padding: 10px 20px; font-weight: bold; font-size: 0.9rem;
+        z-index: 900; text-align: center;
         }
         </style>
 
