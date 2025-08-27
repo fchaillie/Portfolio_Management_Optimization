@@ -96,6 +96,20 @@ def inject_global_css_banner_and_disclaimer() -> None:
           overflow: hidden !important;  /* disable sidebar scrollbars */
         }
 
+        /* Sidebar content: also prevent internal scroll */
+        [data-testid="stSidebarContent"]{
+          height: 100vh !important;
+          overflow: hidden !important;
+          /* If your earlier CSS shifts content up, you may keep it.
+            If content gets cut off, force no vertical shift:
+            transform: none !important; */
+        }
+
+        /* Hide any residual scrollbars across browsers */
+        [data-testid="stSidebarContent"]::-webkit-scrollbar{ display: none !important; }
+        [data-testid="stSidebar"]::-webkit-scrollbar{ display: none !important; }
+        [data-testid="stSidebarContent"]{ scrollbar-width: none !important; }
+
         /* ===== Utility classes for banner & disclaimer ===== */
         .banner{
           background-color:#D0F0C0; padding:18px 40px; font-size:2.2rem; font-weight:bold;
