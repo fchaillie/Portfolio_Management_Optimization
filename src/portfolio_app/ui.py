@@ -77,7 +77,7 @@ def inject_global_css_banner_and_disclaimer() -> None:
         section[data-testid="stSidebar"] header{ display:none !important; height:0 !important; }
         [data-testid="stSidebar"]{ padding-top:0 !important; }
         [data-testid="stSidebar"] > div{ padding-top:0 !important; margin-top:0 !important; }
-        [data-testid="stSidebarContent"]{ padding-top:0 !important; margin-top:0 !important; transform: translateY(-70px); }
+        [data-testid="stSidebarContent"]{ padding-top:0 !important; margin-top:0 !important; transform: translateY(-75px); }
         [data-testid="stSidebarContent"] > div:first-child{ margin-top:0 !important; padding-top:0 !important; }
         [data-testid="stSidebarContent"] [data-testid="element-container"]{ margin-bottom:6px !important; }
 
