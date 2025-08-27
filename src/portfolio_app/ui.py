@@ -88,28 +88,6 @@ def inject_global_css_banner_and_disclaimer() -> None:
           overflow: auto !important;    /* scroll instead of growing */
         }
 
-        /* === Lock the sidebar: fixed height, no scrolling === */
-        section[data-testid="stSidebar"]{
-          position: sticky;      /* stays put as the page scrolls */
-          top: 0;
-          height: 100vh !important;
-          overflow: hidden !important;  /* disable sidebar scrollbars */
-        }
-
-        /* Sidebar content: also prevent internal scroll */
-        [data-testid="stSidebarContent"]{
-          height: 100vh !important;
-          overflow: hidden !important;
-          /* If your earlier CSS shifts content up, you may keep it.
-            If content gets cut off, force no vertical shift:
-            transform: none !important; */
-        }
-
-        /* Hide any residual scrollbars across browsers */
-        [data-testid="stSidebarContent"]::-webkit-scrollbar{ display: none !important; }
-        [data-testid="stSidebar"]::-webkit-scrollbar{ display: none !important; }
-        [data-testid="stSidebarContent"]{ scrollbar-width: none !important; }
-
         /* ===== Utility classes for banner & disclaimer ===== */
         .banner{
           background-color:#D0F0C0; padding:18px 40px; font-size:2.2rem; font-weight:bold;
@@ -117,11 +95,9 @@ def inject_global_css_banner_and_disclaimer() -> None:
           margin-bottom: 28px; /* space below the main title */
         }
         .disclaimer{
-        position: fixed; bottom: 0; left: 520px;                /* shift right by sidebar width */
-        width: calc(100% - 520px);                               /* avoid covering the sidebar */
-        background-color: black; color: white;
-        padding: 10px 20px; font-weight: bold; font-size: 0.9rem;
-        z-index: 900; text-align: center;
+        position:fixed; bottom:0; left:0; width:100%;
+        background-color:black; color:white; padding:10px 20px; font-weight:bold; font-size:0.9rem;
+        z-index:9999; text-align:center;
         }
         </style>
 
