@@ -288,7 +288,7 @@ else:
         f"""
         <div style="background: white; padding: 4px 12px; margin: 36px 0 18px 0; text-align: center;
                     font-size: 2.0rem; font-weight: bold; color: black; box-shadow: 0 2px 6px rgba(0,0,0,0.06);">
-          {opt_mode} Portfolio Backtest: Target vs Buy & Hold
+          {opt_mode} Portfolio Backtest:<br>Target with {rebal_choice} rebalancing vs Buy & Hold
         </div>
         """, unsafe_allow_html=True
     )
