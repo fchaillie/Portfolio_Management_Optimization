@@ -285,10 +285,10 @@ else:
 
     # Backtest
     st.markdown(
-        """
+        f"""
         <div style="background: white; padding: 4px 12px; margin: 36px 0 18px 0; text-align: center;
                     font-size: 2.0rem; font-weight: bold; color: black; box-shadow: 0 2px 6px rgba(0,0,0,0.06);">
-          Optimized Portfolio Backtest: Target vs Buy & Hold
+          {opt_mode} Portfolio Backtest: Target vs Buy & Hold
         </div>
         """, unsafe_allow_html=True
     )
@@ -304,14 +304,14 @@ else:
         margin=dict(t=10, b=40, l=60, r=20), showlegend=True
     )
     st.plotly_chart(fig, use_container_width=True, config={"displayModeBar": False})
-    
+
 
     # Metrics tables
     st.markdown(
-        """
+        f"""
         <div style="background: white; padding: 4px 12px; margin: 36px 0 0px 0; text-align: center;
                     font-size: 2.0rem; font-weight: bold; color: black; box-shadow: 0 2px 6px rgba(0,0,0,0.06);">
-          Optimized Portfolio Metrics
+          {opt_mode} Portfolio Metrics
         </div>
         """, unsafe_allow_html=True
     )
