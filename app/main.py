@@ -280,7 +280,7 @@ else:
     # Metrics tables
     st.markdown(
         """
-        <div style="background: white; padding: 4px 12px; margin: 36px 0 1px 0; text-align: center;
+        <div style="background: white; padding: 4px 12px; margin: 36px 0 0px 0; text-align: center;
                     font-size: 2.0rem; font-weight: bold; color: black; box-shadow: 0 2px 6px rgba(0,0,0,0.06);">
           Optimized Portfolio Metrics
         </div>
