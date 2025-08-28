@@ -30,6 +30,7 @@ def inject_global_css_banner_and_disclaimer() -> None:
     - renders a centered header banner and a pinned disclaimer (HTML content).
     The banner/disclaimer use CSS classes so their styling stays in this block.
     """
+    # --- Inject CSS ---
     st.markdown(
         """
         <style>
@@ -83,27 +84,31 @@ def inject_global_css_banner_and_disclaimer() -> None:
 
         /* Lock the Tickers textarea size in the sidebar */
         section[data-testid="stSidebar"] textarea[aria-label="Tickers"]{
-          resize: none !important;      /* remove drag handle */
-          height: 200px !important;     /* keep fixed height */
-          overflow: auto !important;    /* scroll instead of growing */
+          resize: none !important;
+          height: 200px !important;
+          overflow: auto !important;
         }
 
-        /* ===== Utility classes for banner & disclaimer ===== */
+        /* ===== Utility class for banner ===== */
         .banner{
           background-color:#D0F0C0; padding:18px 40px; font-size:2.2rem; font-weight:bold;
           border-radius:0px; box-shadow:0 2px 6px rgba(0,0,0,0.06); display:inline-block; margin-top:0;
-          margin-bottom: 35px; /* space below the main title */
+          margin-bottom: 35px;
         }
-        <style>
+        </style>
+        """,
+        unsafe_allow_html=True
+    )
 
-        <!-- Banner HTML (content-only) -->
+    # --- Render Banner HTML ---
+    st.markdown(
+        """
         <div style="text-align: center;">
           <div class="banner">Design your investment strategy !</div>
         </div>
-
-        """, unsafe_allow_html=True
+        """,
+        unsafe_allow_html=True
     )
-
 
 def apply_background_image(path: str = DEFAULT_BG_PATH, overlay_rgba: str = "rgba(0,0,0,0.10)") -> None:
     """
