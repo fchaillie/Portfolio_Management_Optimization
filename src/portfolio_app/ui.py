@@ -99,7 +99,8 @@ def inject_global_css_banner_and_disclaimer() -> None:
         bottom: 0;
         right: 0;      /* anchor to right edge */
         width: min(900px, 70vw); /* adjust to match your main content width */
-        background: rgba(255,255,255,0.95);
+        background: black;
+        color:white;
         border-top: 1px solid #ccc;
         padding: 8px 12px;
         z-index: 1000;
