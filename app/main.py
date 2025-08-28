@@ -181,76 +181,23 @@ else:
     eq_bt, summ_bt            = res["eq_bt"], res["summ_bt"]
     horizon, rebal_choice     = res["horizon"], res["rebal_choice"]
 
-    col1, col2 = st.columns([3, 2], gap="large") 
-    with col1:
-        st.markdown(
-            """
-            <div style="background: white; padding: 4px 12px; margin: 4px 0 18px 0; text-align: center;
-                        font-size: 2.0rem; font-weight: bold; color: black; box-shadow: 0 2px 6px rgba(0,0,0,0.06);">
-              Starting Portfolio Backtest
-            </div>
-            """, unsafe_allow_html=True
-        )
-        fig = go.Figure()
-        for c in prices.columns:
-            fig.add_trace(go.Scatter(x=prices.index, y=prices[c], mode="lines", name=c))
-        fig.update_layout(xaxis_title="Date", yaxis_title="Price", margin=dict(t=10, b=40, l=60, r=20))
-        st.plotly_chart(fig, use_container_width=True, config={"displayModeBar": False})
+ 
+    st.markdown(
+        """
+        <div style="background: white; padding: 4px 12px; margin: 4px 0 18px 0; text-align: center;
+                    font-size: 2.0rem; font-weight: bold; color: black; box-shadow: 0 2px 6px rgba(0,0,0,0.06);">
+            Starting Portfolio Backtest
+        </div>
+        """, unsafe_allow_html=True
+    )
+    fig = go.Figure()
+    for c in prices.columns:
+        fig.add_trace(go.Scatter(x=prices.index, y=prices[c], mode="lines", name=c))
+    fig.update_layout(xaxis_title="Date", yaxis_title="Price", margin=dict(t=10, b=40, l=60, r=20))
+    st.plotly_chart(fig, use_container_width=True, config={"displayModeBar": False})
 
-    with col2:
-        st.markdown(
-            f"""
-            <div style="background: white; padding: 4px 12px; margin: 4px 0 4px 0; text-align: center;
-                        font-size: 1.5rem; font-weight: bold; color: black; box-shadow: 0 2px 6px rgba(0,0,0,0.06);">
-              Weights of {opt_mode} portfolio
-            </div>
-            """, unsafe_allow_html=True
-        )
-        
-        # --- Build weights_df (sorted by weight DESC) ---
-        if isinstance(weights, pd.Series):
-            # Series -> DataFrame with explicit columns
-            weights_df = weights.rename_axis('Ticker').reset_index(name='Weight')
-        elif isinstance(weights, dict):
-            # Dict -> DataFrame
-            weights_df = pd.DataFrame(list(weights.items()), columns=['Ticker', 'Weight'])
-        else:
-            st.warning("⚠️ No weights found. Please run the analysis.")
-            weights_df = pd.DataFrame(columns=['Ticker', 'Weight'])
+ 
 
-        # Ensure numeric, drop zero weights, then sort DESC **before** formatting to %
-        weights_df['Weight'] = pd.to_numeric(weights_df['Weight'], errors='coerce').fillna(0.0)
-        weights_df = (
-            weights_df[weights_df['Weight'] > 0]
-            .sort_values('Weight', ascending=False, kind='mergesort')  # stable sort
-            .reset_index(drop=True)
-        )
-
-        # Now format for display
-        weights_df['Weight'] = (weights_df['Weight'] * 100).round(1).astype(str) + '%'
-
-        # Render as styled HTML (unchanged)
-        st.markdown("""
-            <style>
-            .custom-table table { width: 100%; border-collapse: collapse; }
-            .custom-table th, .custom-table td { text-align: center; padding: 4px 8px; }
-            </style>
-        """, unsafe_allow_html=True)
-
-        st.markdown(f"""
-            <div class="custom-table" style="
-                background-color: white;
-                padding: 0;
-                border-radius: 0px;
-                box-shadow: 0 2px 8px rgba(0,0,0,0.10);
-                font-size: 1.0rem;
-                margin-bottom: 8px;
-                max-height: 360px;
-                overflow-y: auto;
-            ">
-                {weights_df.to_html(index=False, border=0)}
-            </div>
-        """, unsafe_allow_html=True)
 
     # Frontier
     st.markdown(
@@ -276,6 +223,65 @@ else:
         st.plotly_chart(fig2, use_container_width=True, config={"displayModeBar": False})
     else:
         st.info("Frontier sampling produced no points (possibly due to data issues).")
+
+
+    # Weights of {opt_mode} portfolio
+    st.markdown(
+        f"""
+        <div style="background: white; padding: 4px 12px; margin: 4px 0 4px 0; text-align: center;
+                    font-size: 1.5rem; font-weight: bold; color: black; box-shadow: 0 2px 6px rgba(0,0,0,0.06);">
+            Weights of {opt_mode} portfolio
+        </div>
+        """, unsafe_allow_html=True
+    )
+    
+    # --- Build weights_df (sorted by weight DESC) ---
+    if isinstance(weights, pd.Series):
+        # Series -> DataFrame with explicit columns
+        weights_df = weights.rename_axis('Ticker').reset_index(name='Weight')
+    elif isinstance(weights, dict):
+        # Dict -> DataFrame
+        weights_df = pd.DataFrame(list(weights.items()), columns=['Ticker', 'Weight'])
+    else:
+        st.warning("⚠️ No weights found. Please run the analysis.")
+        weights_df = pd.DataFrame(columns=['Ticker', 'Weight'])
+
+    # Ensure numeric, drop zero weights, then sort DESC **before** formatting to %
+    weights_df['Weight'] = pd.to_numeric(weights_df['Weight'], errors='coerce').fillna(0.0)
+    weights_df = (
+        weights_df[weights_df['Weight'] > 0]
+        .sort_values('Weight', ascending=False, kind='mergesort')  # stable sort
+        .reset_index(drop=True)
+    )
+
+    # Now format for display
+    weights_df['Weight'] = (weights_df['Weight'] * 100).round(1).astype(str) + '%'
+
+
+
+    # Render as styled HTML (unchanged)
+    st.markdown("""
+        <style>
+        .custom-table table { width: 100%; border-collapse: collapse; }
+        .custom-table th, .custom-table td { text-align: center; padding: 4px 8px; }
+        </style>
+    """, unsafe_allow_html=True)
+
+    st.markdown(f"""
+        <div class="custom-table" style="
+            background-color: white;
+            padding: 0;
+            border-radius: 0px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.10);
+            font-size: 1.0rem;
+            margin-bottom: 8px;
+            max-height: 360px;
+            overflow-y: auto;
+        ">
+            {weights_df.to_html(index=False, border=0)}
+        </div>
+    """, unsafe_allow_html=True)
+
 
     # Metrics tables
     st.markdown(
