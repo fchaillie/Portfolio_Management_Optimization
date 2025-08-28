@@ -94,11 +94,17 @@ def inject_global_css_banner_and_disclaimer() -> None:
           border-radius:0px; box-shadow:0 2px 6px rgba(0,0,0,0.06); display:inline-block; margin-top:0;
           margin-bottom: 28px; /* space below the main title */
         }
-        .disclaimer{
-        position:fixed; bottom:0; left:0; width:100%;
-        background-color:black; color:white; padding:10px 20px; font-weight:bold; font-size:0.9rem;
-        z-index:9999; text-align:center;
+        #right_disclaimer {
+        position: fixed;
+        bottom: 0;
+        right: 0;      /* anchor to right edge */
+        width: min(900px, 70vw); /* adjust to match your main content width */
+        background: rgba(255,255,255,0.95);
+        border-top: 1px solid #ccc;
+        padding: 8px 12px;
+        z-index: 1000;
         }
+        .block-container { padding-bottom: 72px; }
         </style>
 
         <!-- Banner HTML (content-only) -->
@@ -107,7 +113,7 @@ def inject_global_css_banner_and_disclaimer() -> None:
         </div>
 
         <!-- Fixed disclaimer HTML (content-only) -->
-        <div class="disclaimer">
+        <div id="right_disclaimer">>
           This site does not give investment advice. Past performances don't represent future performances. <br>
           Data Source: Yahoo Finance.
         </div>
