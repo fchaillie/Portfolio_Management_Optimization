@@ -198,6 +198,17 @@ else:
     eq_bt, summ_bt            = res["eq_bt"], res["summ_bt"]
     horizon, rebal_choice     = res["horizon"], res["rebal_choice"]
 
+    st.markdown(
+    """
+    <div style="display:flex; justify-content:center; margin-top: 10px;">
+        <div style="background-color: black; padding: 20px; font-size: 0.7rem; font-weight: bold; color: white;
+                    border-radius: 12px; box-shadow: 0 2px 6px rgba(0,0,0,0.06); text-align: center; display:inline-block;">
+        This site does not give investment advice. Past performances don't represent future performances. <br>
+        Data Source: Yahoo Finance.
+        </div>
+    </div>
+    """, unsafe_allow_html=True
+    )    
  
     st.markdown(
         """

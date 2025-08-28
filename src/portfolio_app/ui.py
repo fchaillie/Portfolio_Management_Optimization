@@ -94,30 +94,13 @@ def inject_global_css_banner_and_disclaimer() -> None:
           border-radius:0px; box-shadow:0 2px 6px rgba(0,0,0,0.06); display:inline-block; margin-top:0;
           margin-bottom: 28px; /* space below the main title */
         }
-        #right_disclaimer {
-        position: fixed;
-        bottom: 0;
-        right: 0;      /* anchor to right edge */
-        width: min(900px, 70vw); /* adjust to match your main content width */
-        background: black;
-        color:white;
-        border-top: 1px solid #ccc;
-        padding: 8px 12px;
-        z-index: 1000;
-        }
-        .block-container { padding-bottom: 72px; }
-        </style>
+
 
         <!-- Banner HTML (content-only) -->
         <div style="text-align: center;">
           <div class="banner">Design your investment strategy !</div>
         </div>
 
-        <!-- Fixed disclaimer HTML (content-only) -->
-        <div id="right_disclaimer">
-          This site does not give investment advice. Past performances don't represent future performances. <br>
-          Data Source: Yahoo Finance.
-        </div>
         """, unsafe_allow_html=True
     )
 
