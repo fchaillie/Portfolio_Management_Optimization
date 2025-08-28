@@ -80,12 +80,16 @@ with st.sidebar:
         if HAS_RISKFOLIO:
             modes += ["Hierarchical Risk Parity"]
         opt_mode = st.selectbox("Optimization mode", modes)
-        risk_free_rate = st.number_input("Risk-free rate (annual)", 0.0, 0.2, 0.01, 0.005, format="%.3f")
+        risk_free_rate_percent = st.number_input("Risk-free rate (annual, %)", min_value=0.0, max_value=20.0, value=2.0, step=0.1, format="%.1f")
+        risk_free_rate = risk_free_rate_percent / 100.0
         rebal_choice = st.selectbox("Rebalancing frequency", ["Monthly", "Quarterly"], index=0)
     with o2:
-        max_w_asset = st.slider("Max weight per asset", 0.05, 1.0, 1.0, 0.05)
-        target_vol   = st.slider("Target volatility (annualized)", 0.05, 0.40, 0.15, 0.01)
-        beta_cvar    = st.slider("VaR/CVaR confidence level", 0.80, 0.99, 0.95, 0.01)
+        max_w_asset_percent = st.slider("Max weight per asset (%)", min_value=5, max_value=100, value=100, step=1, format="%.0f")
+        max_w_asset = max_w_asset_percent / 100.0
+        target_vol_percent = st.slider("Target volatility (annualized, %)", min_value=5, max_value=40, value=15, step=1, format="%.0f")
+        target_vol = target_vol_percent / 100.0
+        beta_cvar_percent = st.slider("VaR/CVaR confidence level (%)", min_value=80.0, max_value=99.5, value=95.0, step=0.5, format="%.1f")
+        beta_cvar = beta_cvar_percent / 100.0
 
     m1, m2 = st.columns(2, gap="small")
     with m1:
