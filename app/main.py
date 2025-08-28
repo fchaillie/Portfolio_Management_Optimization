@@ -307,7 +307,7 @@ else:
                            .custom-table th, .custom-table td { text-align: center; padding: 4px 8px; }</style>""",
                     unsafe_allow_html=True)
         st.markdown(f"""<div class="custom-table" style="background-color: white; padding: 0; border-radius: 0px;
-                    box-shadow: 0 2px 8px rgba(0,0,0,0.10); font-size: 1rem; margin-bottom: 8px;">
+                    box-shadow: 0 2px 8px rgba(0,0,0,0.10); font-size: 1rem; margin-bottom: 16px;">
                     {table_left.to_html(index=False, border=0)}</div>""", unsafe_allow_html=True)
 
     with cR:
