@@ -186,7 +186,7 @@ else:
         st.markdown(
             """
             <div style="background: white; padding: 4px 12px; margin: 4px 0 12px 0; text-align: center;
-                        font-size: 1.0rem; font-weight: bold; color: black; box-shadow: 0 2px 6px rgba(0,0,0,0.06);">
+                        font-size: 2.0rem; font-weight: bold; color: black; box-shadow: 0 2px 6px rgba(0,0,0,0.06);">
               Starting Portfolio Backtest
             </div>
             """, unsafe_allow_html=True
@@ -201,7 +201,7 @@ else:
         st.markdown(
             """
             <div style="background: white; padding: 4px 12px; margin: 4px 0 12px 0; text-align: center;
-                        font-size: 1.0rem; font-weight: bold; color: black; box-shadow: 0 2px 6px rgba(0,0,0,0.06);">
+                        font-size: 2.0rem; font-weight: bold; color: black; box-shadow: 0 2px 6px rgba(0,0,0,0.06);">
               Optimized Portfolio Weights
             </div>
             """, unsafe_allow_html=True
@@ -255,8 +255,8 @@ else:
     # Frontier
     st.markdown(
         """
-        <div style="background: white; padding: 4px 12px; margin: 4px 0 12px 0; text-align: center;
-                    font-size: 1.0rem; font-weight: bold; color: black; box-shadow: 0 2px 6px rgba(0,0,0,0.06);">
+        <div style="background: white; padding: 4px 12px; margin: 12px 0 12px 0; text-align: center;
+                    font-size: 2.0rem; font-weight: bold; color: black; box-shadow: 0 2px 6px rgba(0,0,0,0.06);">
           Efficient Frontier (25 samples)
         </div>
         """, unsafe_allow_html=True
@@ -266,7 +266,7 @@ else:
         fig2.add_trace(go.Scatter(x=frontier["vol"] * 100, y=frontier["ret"] * 100, mode="markers", name="Frontier samples"))
         fig2.update_layout(
             xaxis_title="Annualized volatility (%)", yaxis_title="Annualized return (%)",
-            margin=dict(t=10, b=80, l=60, r=20),
+            margin=dict(t=10, b=40, l=60, r=20),
             xaxis=dict(tickformat=".0f", showgrid=True, dtick=5, zeroline=False, zerolinewidth=1, zerolinecolor="black"),
             yaxis=dict(tickformat=".0f", showgrid=True, dtick=5,
                        range=[min(0, frontier["ret"].min()*100 - 5), (frontier["ret"].max()*100 + 5)],
@@ -280,8 +280,8 @@ else:
     # Metrics tables
     st.markdown(
         """
-        <div style="background: white; padding: 4px 12px; margin: 4px 0 12px 0; text-align: center;
-                    font-size: 1.0rem; font-weight: bold; color: black; box-shadow: 0 2px 6px rgba(0,0,0,0.06);">
+        <div style="background: white; padding: 4px 12px; margin: 12px 0 4px 0; text-align: center;
+                    font-size: 2.0rem; font-weight: bold; color: black; box-shadow: 0 2px 6px rgba(0,0,0,0.06);">
           Optimized Portfolio Metrics
         </div>
         """, unsafe_allow_html=True
@@ -306,9 +306,8 @@ else:
         st.markdown("""<style>.custom-table table { width: 100%; border-collapse: collapse; }
                            .custom-table th, .custom-table td { text-align: center; padding: 4px 8px; }</style>""",
                     unsafe_allow_html=True)
-        st.markdown(
-            f"""<div class="custom-table" style="background-color: white; padding: 0; border-radius: 0px;
-                    box-shadow: 0 2px 8px rgba(0,0,0,0.10); font-size: 1.0rem; margin-bottom: 8px;">
+        st.markdown(f"""<div class="custom-table" style="background-color: white; padding: 0; border-radius: 0px;
+                    box-shadow: 0 2px 8px rgba(0,0,0,0.10); font-size: 1.5rem; margin-bottom: 8px;">
                     {table_left.to_html(index=False, border=0)}</div>""", unsafe_allow_html=True)
 
     with cR:
@@ -316,16 +315,15 @@ else:
         st.markdown("""<style>.custom-table table { width: 100%; border-collapse: collapse; }
                            .custom-table th, .custom-table td { text-align: center; padding: 4px 8px; }</style>""",
                     unsafe_allow_html=True)
-        st.markdown(
-            f"""<div class="custom-table" style="background-color: white; padding: 0; border-radius: 0px;
-                    box-shadow: 0 2px 8px rgba(0,0,0,0.10); font-size: 1.0rem; margin-bottom: 8px;">
+        st.markdown(f"""<div class="custom-table" style="background-color: white; padding: 0; border-radius: 0px;
+                    box-shadow: 0 2px 8px rgba(0,0,0,0.10); font-size: 1.5rem; margin-bottom: 8px;">
                     {table_right.to_html(index=False, border=0)}</div>""", unsafe_allow_html=True)
 
     # Backtest
     st.markdown(
         """
         <div style="background: white; padding: 4px 12px; margin: 4px 0 12px 0; text-align: center;
-                    font-size: 1.0rem; font-weight: bold; color: black; box-shadow: 0 2px 6px rgba(0,0,0,0.06);">
+                    font-size: 2.0rem; font-weight: bold; color: black; box-shadow: 0 2px 6px rgba(0,0,0,0.06);">
           Optimized Portfolio Backtest: Target vs Buy & Hold
         </div>
         """, unsafe_allow_html=True
