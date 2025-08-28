@@ -266,7 +266,7 @@ else:
         fig2.add_trace(go.Scatter(x=frontier["vol"] * 100, y=frontier["ret"] * 100, mode="markers", name="Frontier samples"))
         fig2.update_layout(
             xaxis_title="Annualized volatility (%)", yaxis_title="Annualized return (%)",
-            margin=dict(t=10, b=40, l=60, r=20),
+            margin=dict(t=10, b=80, l=60, r=20),
             xaxis=dict(tickformat=".0f", showgrid=True, dtick=5, zeroline=False, zerolinewidth=1, zerolinecolor="black"),
             yaxis=dict(tickformat=".0f", showgrid=True, dtick=5,
                        range=[min(0, frontier["ret"].min()*100 - 5), (frontier["ret"].max()*100 + 5)],
@@ -294,11 +294,11 @@ else:
              ("Daily CVaR (95%)", fp(vr["CVaR"])),
              (f"Total Return (Target, {rebal_choice} rebal.)", fp(summ_bt["TotalReturn_Target"])),
              ("Total Return (Buy & Hold)", fp(summ_bt["TotalReturn_Buy&Hold"]))]
-    right = [(f"Monte Carlo simulations return prob. 5 ({horizon} mo)",  fp(mc_stats["p5"])),
-             (f"Monte Carlo simulations return prob. 50 ({horizon} mo)", fp(mc_stats["p50"])),
-             (f"Monte Carlo simulations return prob. 95 ({horizon} mo)", fp(mc_stats["p95"])),
-             (f"Monte Carlo simulations Expected return ({horizon} mo)", fp(mc_stats["mean"])),
-             (f"Monte Carlo simulations std ({horizon} mo)",  fp(mc_stats["std"]))]
+    right = [(f"Monte Carlo simulations return prob. 5% ({horizon} M)",  fp(mc_stats["p5"])),
+             (f"Monte Carlo simulations return prob. 50% ({horizon} M)", fp(mc_stats["p50"])),
+             (f"Monte Carlo simulations return prob. 95% ({horizon} M)", fp(mc_stats["p95"])),
+             (f"Monte Carlo simulations Expected return ({horizon} M)", fp(mc_stats["mean"])),
+             (f"Monte Carlo simulations std ({horizon} M)",  fp(mc_stats["std"]))]
 
     cL, cR = st.columns(2)
     with cL:
