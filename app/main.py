@@ -229,7 +229,7 @@ else:
     st.markdown(
         f"""
         <div style="background: white; padding: 4px 12px; margin: 4px 0 4px 0; text-align: center;
-                    font-size: 1.5rem; font-weight: bold; color: black; box-shadow: 0 2px 6px rgba(0,0,0,0.06);">
+                    font-size: 2rem; font-weight: bold; color: black; box-shadow: 0 2px 6px rgba(0,0,0,0.06);">
             Weights of {opt_mode} portfolio
         </div>
         """, unsafe_allow_html=True
