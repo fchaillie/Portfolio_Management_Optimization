@@ -202,7 +202,7 @@ else:
     # Frontier
     st.markdown(
         """
-        <div style="background: white; padding: 4px 12px; margin: 36px 0 18px 0; text-align: center;
+        <div style="background: white; padding: 4px 12px; margin: 60px 0 18px 0; text-align: center;
                     font-size: 2.0rem; font-weight: bold; color: black; box-shadow: 0 2px 6px rgba(0,0,0,0.06);">
           All optimal portfolios before choosing optimization mode
         </div>
@@ -228,7 +228,7 @@ else:
     # Weights of {opt_mode} portfolio
     st.markdown(
         f"""
-        <div style="background: white; padding: 4px 12px; margin: 4px 0 4px 0; text-align: center;
+        <div style="background: white; padding: 4px 12px; margin: 60px 0 4px 0; text-align: center;
                     font-size: 2rem; font-weight: bold; color: black; box-shadow: 0 2px 6px rgba(0,0,0,0.06);">
             Weights of {opt_mode} portfolio
         </div>
@@ -286,7 +286,7 @@ else:
     # Backtest
     st.markdown(
         f"""
-        <div style="background: white; padding: 4px 12px; margin: 36px 0 18px 0; text-align: center;
+        <div style="background: white; padding: 4px 12px; margin: 60px 0 18px 0; text-align: center;
                     font-size: 2.0rem; font-weight: bold; color: black; box-shadow: 0 2px 6px rgba(0,0,0,0.06);">
           {opt_mode} Portfolio Backtest:<br>Target with {rebal_choice} rebalancing vs Buy & Hold
         </div>
@@ -309,7 +309,7 @@ else:
     # Metrics tables
     st.markdown(
         f"""
-        <div style="background: white; padding: 4px 12px; margin: 36px 0 0px 0; text-align: center;
+        <div style="background: white; padding: 4px 12px; margin: 60px 0 0px 0; text-align: center;
                     font-size: 2.0rem; font-weight: bold; color: black; box-shadow: 0 2px 6px rgba(0,0,0,0.06);">
           {opt_mode} Portfolio Metrics
         </div>
