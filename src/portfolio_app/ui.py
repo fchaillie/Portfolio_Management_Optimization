@@ -114,7 +114,7 @@ def inject_global_css_banner_and_disclaimer() -> None:
         </div>
 
         <!-- Fixed disclaimer HTML (content-only) -->
-        <div id="right_disclaimer">>
+        <div id="right_disclaimer">
           This site does not give investment advice. Past performances don't represent future performances. <br>
           Data Source: Yahoo Finance.
         </div>
