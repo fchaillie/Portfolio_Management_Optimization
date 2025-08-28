@@ -283,6 +283,29 @@ else:
     """, unsafe_allow_html=True)
 
 
+    # Backtest
+    st.markdown(
+        """
+        <div style="background: white; padding: 4px 12px; margin: 36px 0 18px 0; text-align: center;
+                    font-size: 2.0rem; font-weight: bold; color: black; box-shadow: 0 2px 6px rgba(0,0,0,0.06);">
+          Optimized Portfolio Backtest: Target vs Buy & Hold
+        </div>
+        """, unsafe_allow_html=True
+    )
+    fig = go.Figure()
+    fig.add_trace(go.Scatter(x=eq_bt.index, y=eq_bt["Target"] * 100, mode="lines", name="Target (Rebalanced)"))
+    fig.add_trace(go.Scatter(x=eq_bt.index, y=eq_bt["Buy & Hold"] * 100, mode="lines", name="Buy & Hold"))
+    y_max = math.ceil(eq_bt.max().max() * 100 / 100.0) * 100
+    fig.update_layout(
+        xaxis_title="Date",
+        yaxis_title="Equity Value (Base 100)",
+        yaxis=dict(range=[0, y_max], tickvals=list(range(0, y_max + 100, 100)),
+                   tickformat=".0f", showgrid=True, zeroline=True, zerolinewidth=1, zerolinecolor="black"),
+        margin=dict(t=10, b=40, l=60, r=20), showlegend=True
+    )
+    st.plotly_chart(fig, use_container_width=True, config={"displayModeBar": False})
+    
+
     # Metrics tables
     st.markdown(
         """
@@ -325,24 +348,3 @@ else:
                     box-shadow: 0 2px 8px rgba(0,0,0,0.10); font-size: 1rem; margin-bottom: 8px;margin-top: 1px;">
                     {table_right.to_html(index=False, border=0)}</div>""", unsafe_allow_html=True)
 
-    # Backtest
-    st.markdown(
-        """
-        <div style="background: white; padding: 4px 12px; margin: 36px 0 18px 0; text-align: center;
-                    font-size: 2.0rem; font-weight: bold; color: black; box-shadow: 0 2px 6px rgba(0,0,0,0.06);">
-          Optimized Portfolio Backtest: Target vs Buy & Hold
-        </div>
-        """, unsafe_allow_html=True
-    )
-    fig = go.Figure()
-    fig.add_trace(go.Scatter(x=eq_bt.index, y=eq_bt["Target"] * 100, mode="lines", name="Target (Rebalanced)"))
-    fig.add_trace(go.Scatter(x=eq_bt.index, y=eq_bt["Buy & Hold"] * 100, mode="lines", name="Buy & Hold"))
-    y_max = math.ceil(eq_bt.max().max() * 100 / 100.0) * 100
-    fig.update_layout(
-        xaxis_title="Date",
-        yaxis_title="Equity Value (Base 100)",
-        yaxis=dict(range=[0, y_max], tickvals=list(range(0, y_max + 100, 100)),
-                   tickformat=".0f", showgrid=True, zeroline=True, zerolinewidth=1, zerolinecolor="black"),
-        margin=dict(t=10, b=40, l=60, r=20), showlegend=True
-    )
-    st.plotly_chart(fig, use_container_width=True, config={"displayModeBar": False})
