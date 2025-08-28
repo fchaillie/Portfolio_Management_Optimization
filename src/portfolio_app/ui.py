@@ -94,7 +94,7 @@ def inject_global_css_banner_and_disclaimer() -> None:
           border-radius:0px; box-shadow:0 2px 6px rgba(0,0,0,0.06); display:inline-block; margin-top:0;
           margin-bottom: 35px; /* space below the main title */
         }
-
+        <style>
 
         <!-- Banner HTML (content-only) -->
         <div style="text-align: center;">
