@@ -200,7 +200,7 @@ else:
     with col2:
         st.markdown(
             """
-            <div style="background: white; padding: 4px 12px; margin: 4px 0 6px 0; text-align: center;
+            <div style="background: white; padding: 4px 12px; margin: 4px 0 4px 0; text-align: center;
                         font-size: 2.0rem; font-weight: bold; color: black; box-shadow: 0 2px 6px rgba(0,0,0,0.06);">
               Optimized Portfolio Weights
             </div>
