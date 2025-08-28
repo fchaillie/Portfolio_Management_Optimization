@@ -291,18 +291,18 @@ else:
              ("Annualized Volatility", fp(metrics["ann_vol"])),
              ("Sharpe Ratio", f"{metrics['sharpe']:.2f}"),
              ("Daily VaR (95%)", fp(vr["VaR"])),
-             ("Daily CVaR (95%)", fp(vr["CVaR"]))]
-    right = [(f"Monte Carlo p5 ({horizon} mo)",  fp(mc_stats["p5"])),
-             (f"Monte Carlo p50 ({horizon} mo)", fp(mc_stats["p50"])),
-             (f"Monte Carlo p95 ({horizon} mo)", fp(mc_stats["p95"])),
-             (f"Monte Carlo mean ({horizon} mo)", fp(mc_stats["mean"])),
-             (f"Monte Carlo std ({horizon} mo)",  fp(mc_stats["std"])),
-             (f"Backtest Total Return (Target, {rebal_choice} rebal.)", fp(summ_bt["TotalReturn_Target"])),
-             ("Backtest Total Return (Buy & Hold)", fp(summ_bt["TotalReturn_Buy&Hold"]))]
+             ("Daily CVaR (95%)", fp(vr["CVaR"])),
+             (f"Total Return (Target, {rebal_choice} rebal.)", fp(summ_bt["TotalReturn_Target"])),
+             ("Total Return (Buy & Hold)", fp(summ_bt["TotalReturn_Buy&Hold"]))]
+    right = [(f"Monte Carlo simulations return prob. 5 ({horizon} mo)",  fp(mc_stats["p5"])),
+             (f"Monte Carlo simulations return prob. 50 ({horizon} mo)", fp(mc_stats["p50"])),
+             (f"Monte Carlo simulations return prob. 95 ({horizon} mo)", fp(mc_stats["p95"])),
+             (f"Monte Carlo simulations Expected return ({horizon} mo)", fp(mc_stats["mean"])),
+             (f"Monte Carlo simulations std ({horizon} mo)",  fp(mc_stats["std"]))]
 
     cL, cR = st.columns(2)
     with cL:
-        table_left = pd.DataFrame(left, columns=["Metric", "Value"])
+        table_left = pd.DataFrame(left, columns=["Backtest metrics", "Value"])
         st.markdown("""<style>.custom-table table { width: 100%; border-collapse: collapse; }
                            .custom-table th, .custom-table td { text-align: center; padding: 4px 8px; }</style>""",
                     unsafe_allow_html=True)
@@ -312,7 +312,7 @@ else:
                     {table_left.to_html(index=False, border=0)}</div>""", unsafe_allow_html=True)
 
     with cR:
-        table_right = pd.DataFrame(right, columns=["Metric", "Value"])
+        table_right = pd.DataFrame(right, columns=["Forward looking metrics", "Value"])
         st.markdown("""<style>.custom-table table { width: 100%; border-collapse: collapse; }
                            .custom-table th, .custom-table td { text-align: center; padding: 4px 8px; }</style>""",
                     unsafe_allow_html=True)
@@ -326,7 +326,7 @@ else:
         """
         <div style="background: white; padding: 4px 12px; margin: 4px 0 12px 0; text-align: center;
                     font-size: 1.0rem; font-weight: bold; color: black; box-shadow: 0 2px 6px rgba(0,0,0,0.06);">
-          Backtest: Target vs Buy & Hold
+          Optimized Portfolio Backtest: Target vs Buy & Hold
         </div>
         """, unsafe_allow_html=True
     )
