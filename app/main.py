@@ -181,7 +181,7 @@ else:
     eq_bt, summ_bt            = res["eq_bt"], res["summ_bt"]
     horizon, rebal_choice     = res["horizon"], res["rebal_choice"]
 
-    col1, col2 = st.columns([3, 2], gap="large")
+    col1, col2 = st.columns([3, 2], gap="large") 
     with col1:
         st.markdown(
             """
