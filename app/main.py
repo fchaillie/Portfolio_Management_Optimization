@@ -180,7 +180,7 @@ if res is None:
         <div style="display:flex; justify-content:center; margin-top: 4px;">
             <div style="background-color: black; padding: 20px; font-size: 1rem; font-weight: bold; color: white;
                         border-radius: 12px; box-shadow: 0 2px 6px rgba(0,0,0,0.06); text-align: center; display:inline-block;">
-            This site does not give investment advice. Past performances don't represent future performances. <br>
+            All investments carry risk and past performance is not indicative of future results. <br>
             Data Source: Yahoo Finance.
             </div>
         </div>
