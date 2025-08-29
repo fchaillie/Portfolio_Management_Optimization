@@ -523,8 +523,10 @@ else:
         """,
         unsafe_allow_html=True,
     )
+
     def fp(x):
         return f"{x:.1%}"
+
     left = [
         ("Annualized Return", fp(metrics["ann_return"])),
         ("Annualized Volatility", fp(metrics["ann_vol"])),
