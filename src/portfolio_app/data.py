@@ -29,4 +29,4 @@ def daily_returns(prices: pd.DataFrame) -> pd.DataFrame:
     """
     Compute business-day-aligned daily returns, forward-filling missing prices.
     """
-    return prices.asfreq("B").ffill().pct_change().dropna()
+    return prices.asfreq("B").ffill().pct_change(fill_method=None).dropna()

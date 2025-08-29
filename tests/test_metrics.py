@@ -10,5 +10,5 @@ def test_port_metrics_returns_dict():
     metrics = port_metrics(rets, weights, rfr=0.01)
 
     assert isinstance(metrics, dict)
-    assert "Sharpe" in metrics
-    assert "Volatility" in metrics
+    assert "sharpe" in metrics
+    assert "volatility" in metrics

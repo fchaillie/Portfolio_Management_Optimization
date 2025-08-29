@@ -9,10 +9,11 @@ def test_get_price_data_returns_dataframe():
     assert all(ticker in df.columns for ticker in tickers)
 
 def test_daily_returns_shape():
+    dates = pd.date_range(start="2023-01-01", periods=4, freq="B")  # business days
     prices = pd.DataFrame({
         "AAPL": [100, 102, 101, 103],
         "MSFT": [200, 198, 202, 204]
-    })
+    }, index=dates)
     rets = daily_returns(prices)
     assert isinstance(rets, pd.DataFrame)
     assert rets.shape[0] == prices.shape[0] - 1
