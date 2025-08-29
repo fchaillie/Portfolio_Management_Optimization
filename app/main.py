@@ -95,6 +95,7 @@ with st.sidebar:
     with m1:
         mc_choice = st.selectbox("Investment horizon", ["Monthly", "Quarterly", "Annual"], index=0)
         horizon = {"Monthly": 21, "Quarterly": 63, "Annual": 252}[mc_choice]
+        months_of_horizon = {21: 1, 63: 3, 252: 12}[horizon]
     with m2:
         txn_cost_bps = st.slider("Transaction cost (bps per rebalancing)", 0.0, 50.0, 5.0, 0.5)
     
@@ -337,11 +338,11 @@ else:
              ("Daily CVaR (95%)", fp(vr["CVaR"])),
              (f"Total Return (Target, {rebal_choice} rebal.)", fp(summ_bt["TotalReturn_Target"])),
              ("Total Return (Buy & Hold)", fp(summ_bt["TotalReturn_Buy&Hold"]))]
-    right = [(f"Monte Carlo simulations return prob. 5% ({horizon} M)",  fp(mc_stats["p5"])),
-             (f"Monte Carlo simulations return prob. 50% ({horizon} M)", fp(mc_stats["p50"])),
-             (f"Monte Carlo simulations return prob. 95% ({horizon} M)", fp(mc_stats["p95"])),
-             (f"Monte Carlo simulations Expected return ({horizon} M)", fp(mc_stats["mean"])),
-             (f"Monte Carlo simulations std ({horizon} M)",  fp(mc_stats["std"]))]
+    right = [(f"Monte Carlo simulations return prob. 5% ({months_of_horizon} M)",  fp(mc_stats["p5"])),
+             (f"Monte Carlo simulations return prob. 50% ({months_of_horizon} M)", fp(mc_stats["p50"])),
+             (f"Monte Carlo simulations return prob. 95% ({months_of_horizon} M)", fp(mc_stats["p95"])),
+             (f"Monte Carlo simulations Expected return ({months_of_horizon} M)", fp(mc_stats["mean"])),
+             (f"Monte Carlo simulations std ({months_of_horizon} M)",  fp(mc_stats["std"]))]
 
     cL, cR = st.columns(2)
     with cL:
