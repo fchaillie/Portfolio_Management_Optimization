@@ -418,7 +418,7 @@ else:
         st.markdown(
         """
         <div style="display:flex; justify-content:center; margin-top: 0px;">
-            <div style="background-color: white; padding: 0px 0px; font-size: 1rem; font-weight: bold; color: black;
+            <div style="background-color: white; padding: 0px 0px; font-size: 1rem; font-weight: normal; color: black;
                         border-radius: 0px; box-shadow: 0 2px 6px rgba(0,0,0,0.06); text-align: center; display:inline-block;">
             This table shows some metrics related to the possible future performance of your optimal portfolio.
             </div>
