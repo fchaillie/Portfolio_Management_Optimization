@@ -214,7 +214,7 @@ else:
     st.markdown(
         """
         <div style="display:flex; justify-content:center; margin-top: 0px;">
-            <div style="background-color: white; padding: 0px; font-size: 1rem; font-weight: bold; color: black;
+            <div style="background-color: white; padding: 0px 3px; font-size: 1rem; font-weight: bold; color: black;
                         border-radius: 0px; box-shadow: 0 2px 6px rgba(0,0,0,0.06); text-align: center; display:inline-block;">
             This graph represents how the stocks that you have chosen have done over the period you chose.
             </div>
@@ -251,8 +251,8 @@ else:
     st.markdown(
         """
         <div style="display:flex; justify-content:center; margin-top: 0px;">
-            <div style="background-color: white; padding: 0px; font-size: 1rem; font-weight: bold; color: black;
-                        border-radius: 12px; box-shadow: 0 2px 6px rgba(0,0,0,0.06); text-align: center; display:inline-block;">
+            <div style="background-color: white; padding: 0px 3px; font-size: 1rem; font-weight: bold; color: black;
+                        border-radius: 0px; box-shadow: 0 2px 6px rgba(0,0,0,0.06); text-align: center; display:inline-block;">
             This graph represents some of the optimal portfolios that are availbale to you with the stocks you entered<br>without the options you chose. 
             It's a selection of optimal portfolios with different mixes of risk and return.
             </div>
@@ -322,8 +322,8 @@ else:
     st.markdown(
         """
         <div style="display:flex; justify-content:center; margin-top: 0px;">
-            <div style="background-color: white; padding: 0px; font-size: 1rem; font-weight: bold; color: black;
-                        border-radius: 12px; box-shadow: 0 2px 6px rgba(0,0,0,0.06); text-align: center; display:inline-block;">
+            <div style="background-color: white; padding: 0px 3px; font-size: 1rem; font-weight: bold; color: black;
+                        border-radius: 0px; box-shadow: 0 2px 6px rgba(0,0,0,0.06); text-align: center; display:inline-block;">
             This table represents the weights of the optimal portfolio with the stocks AND options you entered.
             </div>
         </div>
@@ -355,8 +355,8 @@ else:
     st.markdown(
         """
         <div style="display:flex; justify-content:center; margin-top: 0px;">
-            <div style="background-color: white; padding: 0px; font-size: 1rem; font-weight: bold; color: black;
-                        border-radius: 12px; box-shadow: 0 2px 6px rgba(0,0,0,0.06); text-align: center; display:inline-block;">
+            <div style="background-color: white; padding: 0px 3px; font-size: 1rem; font-weight: bold; color: black;
+                        border-radius: 0px; box-shadow: 0 2px 6px rgba(0,0,0,0.06); text-align: center; display:inline-block;">
             This graph represents the weights of the optimal portfolio with the stocks AND options you chose.
             </div>
         </div>
@@ -399,8 +399,8 @@ else:
         st.markdown(
         """
         <div style="display:flex; justify-content:center; margin-top: px;">
-            <div style="background-color: white; padding: 0px; font-size: 1rem; font-weight: bold; color: black;
-                        border-radius: 12px; box-shadow: 0 2px 6px rgba(0,0,0,0.06); text-align: center; display:inline-block;">
+            <div style="background-color: white; padding: 0px 3px; font-size: 1rem; font-weight: bold; color: black;
+                        border-radius: 0px; box-shadow: 0 2px 6px rgba(0,0,0,0.06); text-align: center; display:inline-block;">
             This table shows some metrics related to the backtest of your optimal portfolio for the period you chose.
             </div>
         </div>
@@ -418,8 +418,8 @@ else:
         st.markdown(
         """
         <div style="display:flex; justify-content:center; margin-top: 0px;">
-            <div style="background-color: white; padding: 0px; font-size: 1rem; font-weight: bold; color: black;
-                        border-radius: 12px; box-shadow: 0 2px 6px rgba(0,0,0,0.06); text-align: center; display:inline-block;">
+            <div style="background-color: white; padding: 0px 3px; font-size: 1rem; font-weight: bold; color: black;
+                        border-radius: 0px; box-shadow: 0 2px 6px rgba(0,0,0,0.06); text-align: center; display:inline-block;">
             This table shows some metrics related to the possible future performance of your optimal portfolio.
             </div>
         </div>
