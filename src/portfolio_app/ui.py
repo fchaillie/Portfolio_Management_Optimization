@@ -2,6 +2,7 @@
 UI helpers: global CSS, banner, disclaimer, background image and sidebar width.
 These utilities are intentionally content-agnostic and only deal with presentation.
 """
+
 from __future__ import annotations
 
 import base64
@@ -10,7 +11,8 @@ import streamlit as st
 
 # ---- Public constants ----
 DEFAULT_BG_PATH = "assets/background.jpg"  # expected location for the background image
-DEFAULT_SIDEBAR_WIDTH_PX = 540             # makes the sidebar wide enough for dense controls
+DEFAULT_SIDEBAR_WIDTH_PX = 540  # makes the sidebar wide enough for dense controls
+
 
 @st.cache_resource
 def _bg_b64_cached(img_path: str = DEFAULT_BG_PATH) -> str:
@@ -20,9 +22,10 @@ def _bg_b64_cached(img_path: str = DEFAULT_BG_PATH) -> str:
     """
     return base64.b64encode(Path(img_path).read_bytes()).decode()
 
+
 def inject_global_css_banner_and_disclaimer() -> None:
     """
-    Injects a single CSS block (safe to call once at the top of the app) that: 
+    Injects a single CSS block (safe to call once at the top of the app) that:
     - maximizes working space and removes default toolbar,
     - styles headings and tables,
     - tightens vertical spacing,
@@ -97,7 +100,7 @@ def inject_global_css_banner_and_disclaimer() -> None:
         }
         </style>
         """,
-        unsafe_allow_html=True
+        unsafe_allow_html=True,
     )
 
     # --- Render Banner HTML ---
@@ -107,10 +110,13 @@ def inject_global_css_banner_and_disclaimer() -> None:
           <div class="banner">Design your investment strategy !</div>
         </div>
         """,
-        unsafe_allow_html=True
+        unsafe_allow_html=True,
     )
 
-def apply_background_image(path: str = DEFAULT_BG_PATH, overlay_rgba: str = "rgba(0,0,0,0.10)") -> None:
+
+def apply_background_image(
+    path: str = DEFAULT_BG_PATH, overlay_rgba: str = "rgba(0,0,0,0.10)"
+) -> None:
     """
     Reads an image from `path` (cached), encodes it as base64, and applies it as a fixed full-screen
     background with a dark overlay. The overlay improves contrast for foreground widgets.
@@ -138,8 +144,10 @@ def apply_background_image(path: str = DEFAULT_BG_PATH, overlay_rgba: str = "rgb
           }}
           .stApp > div {{ position: relative; z-index: 1; }}
         </style>
-        """, unsafe_allow_html=True
+        """,
+        unsafe_allow_html=True,
     )
+
 
 def set_sidebar_width(width_px: int = DEFAULT_SIDEBAR_WIDTH_PX) -> None:
     """
@@ -151,5 +159,6 @@ def set_sidebar_width(width_px: int = DEFAULT_SIDEBAR_WIDTH_PX) -> None:
           section[data-testid="stSidebar"] {{ width: {width_px}px !important; }}
           div[data-testid="stSidebar"] > div {{ padding-right: 8px; }}
         </style>
-        """, unsafe_allow_html=True
+        """,
+        unsafe_allow_html=True,
     )

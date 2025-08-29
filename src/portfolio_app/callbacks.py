@@ -2,16 +2,23 @@
 Streamlit callbacks and small UI helpers that interact with session_state.
 Kept separate for clarity and easier testing.
 """
+
 from __future__ import annotations
 
 import streamlit as st
 import yfinance as yf
 
+
 def current_list() -> list[str]:
     """
     Read the current universe from the textarea (one ticker per line).
     """
-    return [x.strip().upper() for x in st.session_state.get("tickers_text", "").splitlines() if x.strip()]
+    return [
+        x.strip().upper()
+        for x in st.session_state.get("tickers_text", "").splitlines()
+        if x.strip()
+    ]
+
 
 def cb_add() -> None:
     """
@@ -33,6 +40,7 @@ def cb_add() -> None:
         # Silently ignore failures (bad symbol, temporary network error, etc.)
         pass
 
+
 def cb_remove() -> None:
     """
     Remove the ticker selected in the 'to_remove' selectbox, if any.
@@ -41,5 +49,7 @@ def cb_remove() -> None:
     if tr == "(none)":
         return
     cur = current_list()
-    st.session_state["tickers_text"] = "\n".join(sorted(set([x for x in cur if x != tr])))
+    st.session_state["tickers_text"] = "\n".join(
+        sorted(set([x for x in cur if x != tr]))
+    )
     st.session_state["to_remove"] = "(none)"
