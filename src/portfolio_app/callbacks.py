@@ -6,7 +6,7 @@ Kept separate for clarity and easier testing.
 from __future__ import annotations
 
 import streamlit as st
-import yfinance as yf
+import yfinance as yf 
 
 
 def current_list() -> list[str]:
