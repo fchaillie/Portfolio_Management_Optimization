@@ -1,12 +1,20 @@
 
+
 import numpy as np
 import pandas as pd
 from portfolio_app.optimizers import optimize_mv
 
 def test_optimize_mv_returns_weights():
+    """
+    Test that optimize_mv returns weights summing to ~1 and keys matching the assets.
+    """
     np.random.seed(0)
-    returns = pd.DataFrame(np.random.randn(100, 4), columns=["A", "B", "C", "D"])
-    weights = optimize_mv(returns, objective="max_sharpe", rfr=0.01, max_w=0.5)
+    rets = pd.DataFrame(np.random.randn(100, 4), columns=["A", "B", "C", "D"])
     
+    # Use a low RFR to avoid error from PyPortfolioOpt (some returns are < RFR)
+    weights = optimize_mv(rets, objective="max_sharpe", rfr=-1.0, max_w=0.5)
+
     assert isinstance(weights, dict)
-    assert np.isclose(sum(weights.values()), 1.0, atol=1e-3)
+    assert set(weights.keys()) == {"A", "B", "C", "D"}        # All assets included
+    total_weight = sum(weights.values())
+    assert abs(total_weight - 1) < 1e-5                        # Normalized weights
