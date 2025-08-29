@@ -1,7 +1,7 @@
 
 import numpy as np
 import pandas as pd
-from src.portfolio_app.optimizers import optimize_mv
+from portfolio_app.optimizers import optimize_mv
 
 def test_optimize_mv_returns_weights():
     np.random.seed(0)

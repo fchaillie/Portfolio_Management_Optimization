@@ -1,5 +1,5 @@
 import pandas as pd
-from src.portfolio_app.data import get_price_data, daily_returns
+from portfolio_app.data import get_price_data, daily_returns
 
 def test_get_price_data_returns_dataframe():
     tickers = ["AAPL", "MSFT"]

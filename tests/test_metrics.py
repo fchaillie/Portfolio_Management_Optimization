@@ -1,7 +1,7 @@
 
 import numpy as np
 import pandas as pd
-from src.portfolio_app.metrics import port_metrics
+from portfolio_app.metrics import port_metrics
 
 def test_port_metrics_returns_dict():
     np.random.seed(0)
