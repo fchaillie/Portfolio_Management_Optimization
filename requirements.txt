@@ -7,6 +7,3 @@ matplotlib>=3.7
 PyPortfolioOpt>=1.5
 scikit-learn>=1.4,<1.6
 pytest
-black
-ruff
-pre-commit
