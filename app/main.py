@@ -211,7 +211,16 @@ else:
     fig.update_layout(xaxis_title="Date", yaxis_title="Price", margin=dict(t=10, b=40, l=60, r=20))
     st.plotly_chart(fig, use_container_width=True, config={"displayModeBar": False})
 
- 
+    st.markdown(
+        """
+        <div style="display:flex; justify-content:center; margin-top: 4px;">
+            <div style="background-color: white; padding: 20px; font-size: 1rem; font-weight: bold; color: black;
+                        border-radius: 12px; box-shadow: 0 2px 6px rgba(0,0,0,0.06); text-align: center; display:inline-block;">
+            This graph represents how the stocks that you have chosen have done over the period you chose.
+            </div>
+        </div>
+        """, unsafe_allow_html=True
+    )
 
 
     # Frontier
@@ -238,6 +247,19 @@ else:
         st.plotly_chart(fig2, use_container_width=True, config={"displayModeBar": False})
     else:
         st.info("Frontier sampling produced no points (possibly due to data issues).")
+
+    st.markdown(
+        """
+        <div style="display:flex; justify-content:center; margin-top: 4px;">
+            <div style="background-color: white; padding: 20px; font-size: 1rem; font-weight: bold; color: black;
+                        border-radius: 12px; box-shadow: 0 2px 6px rgba(0,0,0,0.06); text-align: center; display:inline-block;">
+            This graph represents some of the optimal portfolios that are availbale to you with the stocks you entered without the options you chose.<br>
+            It's a selection of optimal portfolios with different mixes of risk and return.
+            </div>
+        </div>
+        """, unsafe_allow_html=True
+    )
+
 
 
     # Weights of {opt_mode} portfolio
@@ -297,6 +319,16 @@ else:
         </div>
     """, unsafe_allow_html=True)
 
+    st.markdown(
+        """
+        <div style="display:flex; justify-content:center; margin-top: 4px;">
+            <div style="background-color: white; padding: 20px; font-size: 1rem; font-weight: bold; color: black;
+                        border-radius: 12px; box-shadow: 0 2px 6px rgba(0,0,0,0.06); text-align: center; display:inline-block;">
+            This table represents the weights of the optimal portfolio with the stocks AND options you entered.
+            </div>
+        </div>
+        """, unsafe_allow_html=True
+    )
 
     # Backtest
     st.markdown(
@@ -320,6 +352,16 @@ else:
     )
     st.plotly_chart(fig, use_container_width=True, config={"displayModeBar": False})
 
+    st.markdown(
+        """
+        <div style="display:flex; justify-content:center; margin-top: 4px;">
+            <div style="background-color: white; padding: 20px; font-size: 1rem; font-weight: bold; color: black;
+                        border-radius: 12px; box-shadow: 0 2px 6px rgba(0,0,0,0.06); text-align: center; display:inline-block;">
+            This graph represents the weights of the optimal portfolio with the stocks AND options you chose.
+            </div>
+        </div>
+        """, unsafe_allow_html=True
+    )
 
     # Metrics tables
     st.markdown(
@@ -353,6 +395,17 @@ else:
         st.markdown(f"""<div class="custom-table" style="background-color: white; padding: 0; border-radius: 0px;
                     box-shadow: 0 2px 8px rgba(0,0,0,0.10); font-size: 1rem; margin-bottom: 16px;margin-top: 1px;">
                     {table_left.to_html(index=False, border=0)}</div>""", unsafe_allow_html=True)
+        
+        st.markdown(
+        """
+        <div style="display:flex; justify-content:center; margin-top: 4px;">
+            <div style="background-color: white; padding: 20px; font-size: 1rem; font-weight: bold; color: black;
+                        border-radius: 12px; box-shadow: 0 2px 6px rgba(0,0,0,0.06); text-align: center; display:inline-block;">
+            This table shows some metrics related to the backtest of your optimal portfolio for the period you chose.
+            </div>
+        </div>
+        """, unsafe_allow_html=True
+         )
 
     with cR:
         table_right = pd.DataFrame(right, columns=["Forward looking metrics", "Value"])
@@ -362,4 +415,13 @@ else:
         st.markdown(f"""<div class="custom-table" style="background-color: white; padding: 0; border-radius: 0px;
                     box-shadow: 0 2px 8px rgba(0,0,0,0.10); font-size: 1rem; margin-bottom: 8px;margin-top: 1px;">
                     {table_right.to_html(index=False, border=0)}</div>""", unsafe_allow_html=True)
-
+        st.markdown(
+        """
+        <div style="display:flex; justify-content:center; margin-top: 4px;">
+            <div style="background-color: white; padding: 20px; font-size: 1rem; font-weight: bold; color: black;
+                        border-radius: 12px; box-shadow: 0 2px 6px rgba(0,0,0,0.06); text-align: center; display:inline-block;">
+            This table shows some metrics related to the possible future performance of your optimal portfolio.
+            </div>
+        </div>
+        """, unsafe_allow_html=True
+         )
