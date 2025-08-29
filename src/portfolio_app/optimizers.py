@@ -1,3 +1,4 @@
+
 """
 Optimizers: classical mean-variance, target-volatility, CVaR, and HRP.
 We detect optional solver libraries and expose HAS_* flags for the UI.
@@ -99,3 +100,4 @@ def optimize_hrp(returns: pd.DataFrame) -> dict:
     w = {k: float(v) for k, v in w.items()}
     s = sum(max(v, 0) for v in w.values())
     return {k: (max(v, 0) / s if s else 0.0) for k, v in w.items()}
+

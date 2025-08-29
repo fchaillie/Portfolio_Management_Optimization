@@ -1,3 +1,4 @@
+
 """
 Streamlit entry point for the Portfolio Optimization Dashboard.
 Wires together the UI controls, data fetching, optimization, metrics, and plots.
@@ -610,3 +611,4 @@ else:
         """,
             unsafe_allow_html=True,
         )
+
