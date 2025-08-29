@@ -2,11 +2,15 @@
 Simple backtester for a fixed target portfolio against a buy-and-hold baseline.
 Rebalances the target portfolio on a schedule inferred from `freq`.
 """
+
 from __future__ import annotations
 
 import pandas as pd
 
-def backtest(prices: pd.DataFrame, weights: dict, freq: str = "M", txn_cost_bps: float = 0.0):
+
+def backtest(
+    prices: pd.DataFrame, weights: dict, freq: str = "M", txn_cost_bps: float = 0.0
+):
     """
     Parameters
     ----------
@@ -24,7 +28,9 @@ def backtest(prices: pd.DataFrame, weights: dict, freq: str = "M", txn_cost_bps:
     pts = prices.resample("M" if freq == "ME" or freq == "M" else "QE").last().index
 
     # Normalize input weights to align with columns
-    w_t = pd.Series({k: float(v) for k, v in weights.items()}, index=prices.columns).fillna(0.0)
+    w_t = pd.Series(
+        {k: float(v) for k, v in weights.items()}, index=prices.columns
+    ).fillna(0.0)
     eq_t = 1.0  # equity for Target
     eq_b = 1.0  # equity for Buy & Hold
     w = w_t.copy()
@@ -50,7 +56,7 @@ def backtest(prices: pd.DataFrame, weights: dict, freq: str = "M", txn_cost_bps:
         # Rebalance at schedule points
         if prices.index[t] in pts:
             turn = (w_t - w).abs().sum()
-            eq_t *= (1 - turn * txn_cost_bps / 10000)
+            eq_t *= 1 - turn * txn_cost_bps / 10000
             w = w_t.copy()
 
         rows_t.append((prices.index[t], eq_t))
@@ -62,6 +68,8 @@ def backtest(prices: pd.DataFrame, weights: dict, freq: str = "M", txn_cost_bps:
 
     summ = {
         "TotalReturn_Target": float(eq["Target"].iloc[-1] / eq["Target"].iloc[0] - 1),
-        "TotalReturn_Buy&Hold": float(eq["Buy & Hold"].iloc[-1] / eq["Buy & Hold"].iloc[0] - 1),
+        "TotalReturn_Buy&Hold": float(
+            eq["Buy & Hold"].iloc[-1] / eq["Buy & Hold"].iloc[0] - 1
+        ),
     }
     return eq, summ

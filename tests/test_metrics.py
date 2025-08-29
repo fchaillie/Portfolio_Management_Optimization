@@ -1,7 +1,7 @@
-
 import numpy as np
 import pandas as pd
 from portfolio_app.metrics import port_metrics
+
 
 def test_port_metrics_returns_dict():
     """
@@ -14,7 +14,6 @@ def test_port_metrics_returns_dict():
     metrics = port_metrics(rets, weights, rfr=0.01)
 
     assert isinstance(metrics, dict)
-    assert "sharpe" in metrics                      # Expected key
-    assert "ann_vol" in metrics                     # Annual volatility
-    assert "ann_return" in metrics                  # Annual return
-     
+    assert "sharpe" in metrics  # Expected key
+    assert "ann_vol" in metrics  # Annual volatility
+    assert "ann_return" in metrics  # Annual return

@@ -2,6 +2,7 @@
 Metrics and simulations: efficient frontier sampling, annualized metrics,
 simple historical VaR/CVaR, and a bootstrapped Monte Carlo over daily returns.
 """
+
 from __future__ import annotations
 
 import numpy as np
@@ -11,6 +12,7 @@ from pypfopt.expected_returns import mean_historical_return
 from pypfopt.risk_models import CovarianceShrinkage
 from pypfopt.efficient_frontier import EfficientFrontier
 
+
 @st.cache_data(show_spinner=False)
 def est_mu_S(returns: pd.DataFrame):
     """
@@ -19,7 +21,7 @@ def est_mu_S(returns: pd.DataFrame):
     - S : Ledoit–Wolf shrinkage covariance on daily returns.
     """
     mu = mean_historical_return(returns, compounding=True, returns_data=True)
-    S  = CovarianceShrinkage(returns, returns_data=True).ledoit_wolf()
+    S = CovarianceShrinkage(returns, returns_data=True).ledoit_wolf()
     return mu, S
 
 
@@ -52,7 +54,12 @@ def port_metrics(returns: pd.DataFrame, weights: dict, rfr: float = 0.0) -> dict
     mu, sd = pr.mean(), pr.std(ddof=1)
     ann_r = (1 + mu) ** 252 - 1
     ann_v = sd * np.sqrt(252)
-    return {"ann_return": float(ann_r), "ann_vol": float(ann_v), "sharpe": float((ann_r - rfr) / (ann_v + 1e-12))}
+    return {
+        "ann_return": float(ann_r),
+        "ann_vol": float(ann_v),
+        "sharpe": float((ann_r - rfr) / (ann_v + 1e-12)),
+    }
+
 
 def hist_var_cvar(returns: pd.DataFrame, weights: dict, alpha: float = 0.95) -> dict:
     """
@@ -60,9 +67,10 @@ def hist_var_cvar(returns: pd.DataFrame, weights: dict, alpha: float = 0.95) -> 
     """
     w = np.array([weights.get(c, 0.0) for c in returns.columns])
     pr = (returns.to_numpy() * w).sum(axis=1)
-    q  = np.quantile(pr, 1 - alpha)
+    q = np.quantile(pr, 1 - alpha)
     tail = pr[pr <= q]
     return {"VaR": float(q), "CVaR": float(tail.mean() if len(tail) else q)}
+
 
 def mc_stats_only(
     returns: pd.DataFrame,
@@ -100,7 +108,7 @@ def mc_stats_only(
             # Periodic rebalance (optional)
             if rebalance_every and (t + 1) % rebalance_every == 0:
                 turn = np.abs(w_t - w).sum()
-                equity *= (1 - turn * txn_cost_bps / 10000)
+                equity *= 1 - turn * txn_cost_bps / 10000
                 w = w_t.copy()
         finals[p] = equity - 1
 
