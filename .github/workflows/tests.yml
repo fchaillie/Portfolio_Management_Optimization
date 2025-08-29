@@ -1,32 +1,45 @@
-name: Run Python Tests
+name: CI/CD Pipeline
 
 on:
   push:
-    branches:
-      - main
+    branches: [main]
   pull_request:
-    branches:
-      - main
+    branches: [main]
 
 jobs:
-  test:
+  test-lint-format:
+    name: Run Tests, Lint, and Format
     runs-on: ubuntu-latest
 
     steps:
-      - name: ⬇️ Checkout code
-        uses: actions/checkout@v4
+      - name: Checkout code
+        uses: actions/checkout@v3
 
-      - name: 🐍 Set up Python 3.12
-        uses: actions/setup-python@v5
+      - name: Set up Python
+        uses: actions/setup-python@v4
         with:
-          python-version: '3.12'
+          python-version: 3.11
 
-      - name: 📦 Install dependencies
+      - name: Install dependencies
         run: |
           python -m pip install --upgrade pip
           pip install -r requirements.txt
-          pip install pytest
 
-      - name: 🧪 Run Pytest
-        run: |
-          pytest --maxfail=1 --disable-warnings --tb=short
+      - name: Lint with Ruff
+        run: ruff . --exit-zero
+
+      - name: Format check with Black
+        run: black --check .
+
+      - name: Run Pytest
+        run: pytest
+
+  deploy:
+    name: Deploy to Streamlit Cloud
+    needs: test-lint-format
+    if: github.ref == 'refs/heads/main' && success()
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Notify Streamlit Cloud (dummy step)
+        run: echo "✅ Ready for deployment. Push triggers Streamlit Cloud auto-deploy."
