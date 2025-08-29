@@ -5,7 +5,6 @@ We detect optional solver libraries and expose HAS_* flags for the UI.
 
 from __future__ import annotations
 
-import numpy as np
 import pandas as pd
 from pypfopt.expected_returns import mean_historical_return
 from pypfopt.risk_models import CovarianceShrinkage
