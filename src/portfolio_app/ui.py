@@ -93,7 +93,7 @@ def inject_global_css_banner_and_disclaimer() -> None:
         .banner{
           background-color:#D0F0C0; padding:18px 40px; font-size:2.2rem; font-weight:bold;
           border-radius:0px; box-shadow:0 2px 6px rgba(0,0,0,0.06); display:inline-block; margin-top:0;
-          margin-bottom: 35px;
+          margin-bottom: 70px;
         }
         </style>
         """,
