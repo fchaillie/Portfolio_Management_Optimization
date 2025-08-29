@@ -94,7 +94,7 @@ with st.sidebar:
     m1, m2 = st.columns(2, gap="small")
     with m1:
         mc_choice = st.selectbox("Investment horizon", ["Monthly", "Quarterly", "Annual"], index=0)
-        horizon = {"Monthly": 1, "Quarterly": 3, "Annual": 12}[mc_choice]
+        horizon = {"Monthly": 21, "Quarterly": 63, "Annual": 252}[mc_choice]
     with m2:
         txn_cost_bps = st.slider("Transaction cost (bps per rebalancing)", 0.0, 50.0, 5.0, 0.5)
     
