@@ -22,7 +22,7 @@ def _bg_b64_cached(img_path: str = DEFAULT_BG_PATH) -> str:
 
 def inject_global_css_banner_and_disclaimer() -> None:
     """
-    Injects a single CSS block (safe to call once at the top of the app) that:
+    Injects a single CSS block (safe to call once at the top of the app) that: 
     - maximizes working space and removes default toolbar,
     - styles headings and tables,
     - tightens vertical spacing,
