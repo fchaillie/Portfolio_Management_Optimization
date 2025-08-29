@@ -215,7 +215,7 @@ else:
         """
         <div style="display:flex; justify-content:center; margin-top: 0px;">
             <div style="background-color: white; padding: 0px; font-size: 1rem; font-weight: bold; color: black;
-                        border-radius: 12px; box-shadow: 0 2px 6px rgba(0,0,0,0.06); text-align: center; display:inline-block;">
+                        border-radius: 0px; box-shadow: 0 2px 6px rgba(0,0,0,0.06); text-align: center; display:inline-block;">
             This graph represents how the stocks that you have chosen have done over the period you chose.
             </div>
         </div>
