@@ -1,3 +1,4 @@
+
 """
 Streamlit entry point for the Portfolio Optimization Dashboard.
 Wires together the UI controls, data fetching, optimization, metrics, and plots.
@@ -5,7 +6,9 @@ Wires together the UI controls, data fetching, optimization, metrics, and plots.
 
 from __future__ import annotations
 
-import os, sys, math
+import os
+import sys
+import math
 from datetime import date, timedelta
 import numpy as np
 import pandas as pd
@@ -16,7 +19,6 @@ from plotly import graph_objects as go
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
 
 # Import from our package
-from src.portfolio_app import __app_name__, __version__
 from src.portfolio_app.ui import (
     inject_global_css_banner_and_disclaimer,
     apply_background_image,
@@ -522,7 +524,10 @@ else:
         """,
         unsafe_allow_html=True,
     )
-    fp = lambda x: f"{x:.1%}"
+
+    def fp(x):
+        return f"{x:.1%}"
+
     left = [
         ("Annualized Return", fp(metrics["ann_return"])),
         ("Annualized Volatility", fp(metrics["ann_vol"])),
@@ -606,3 +611,4 @@ else:
         """,
             unsafe_allow_html=True,
         )
+
