@@ -9,9 +9,9 @@ RUN pip install --no-cache-dir -r requirements.txt
 # copy your app code
 COPY . .
 
-# expose local port (Render will override with $PORT)
+# expose local port
 EXPOSE 8501
 
-# run Streamlit (use $PORT if defined, else 8501 for local)
-CMD ["bash", "-c", "streamlit run app.py --server.headless true --server.address 0.0.0.0 --server.port ${PORT:-8501}"]
+# run Streamlit
+CMD ["bash", "-c", "streamlit run app/main.py --server.headless true --server.address 0.0.0.0 --server.port ${PORT:-8501}"]
 
