@@ -1,5 +1,11 @@
 FROM python:3.11-slim
 
+
+# Environment sanity
+ENV STREAMLIT_BROWSER_GATHER_USAGE_STATS=false \
+    PYTHONDONTWRITEBYTECODE=1 \
+    PYTHONUNBUFFERED=1
+
 WORKDIR /app
 
 # install Python deps
