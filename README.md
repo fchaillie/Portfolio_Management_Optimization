@@ -1,191 +1,165 @@
-# Portfolio Optimization Dashboard
+# 📊 Portfolio Optimization & Risk Dashboard
 
-A client‑facing web application that supports the **design, analysis, and backtesting** of long‑only equity portfolios. The interface is built for clarity and auditability, while the engine applies established quantitative techniques (mean–variance, target volatility, CVaR, and HRP) with transparent assumptions and reproducible results.
-
-> **Important**  
-> This software is provided for research and educational purposes. It is **not** investment advice and should not be used to make investment decisions. Past performance is not indicative of future results.
+An interactive **Streamlit dashboard** for portfolio optimization, risk analysis, Monte Carlo simulations, and backtesting.  
+Built with **Python, PyPortfolioOpt, Riskfolio-Lib, and Streamlit** — designed to showcase both financial knowledge and data engineering skills.
 
 ---
 
-## 1. Executive Summary
+## 🚀 Live Demo
 
-- **Objective:** Provide a disciplined workflow to construct and compare long‑only portfolios under different risk frameworks.  
-- **Audience:** Investment professionals, analysts, and sophisticated clients seeking transparent methodology and quick iteration.  
-- **What you can do:**  
-  - Specify an investable universe and date range.  
-  - Optimize using Max Sharpe, Min Volatility, **Target Volatility**, **Min CVaR**, or **HRP**.  
-  - Review risk/return metrics (annualized), VaR/CVaR, and bootstrapped Monte Carlo horizon outcomes.  
-  - Backtest an optimized portfolio against buy‑and‑hold, including rebalancing costs.
+👉 Try it instantly on **Streamlit Cloud**:  
+[![Streamlit](https://img.shields.io/badge/Streamlit-Live%20App-FF4B4B?logo=streamlit&logoColor=white)](https://your-streamlit-app.streamlit.app)
 
 ---
 
-## 2. Capabilities
+## ✨ Features
 
-- **Optimization methods**
-  - **Max Sharpe / Min Volatility** (PyPortfolioOpt with Ledoit–Wolf shrinkage and L2 regularization)
-  - **Target Volatility** (efficient frontier point at a chosen annualized volatility)
-  - **Min Conditional VaR (β)** (requires `cvxpy`; minimizes tail loss at confidence β)
-  - **Hierarchical Risk Parity (HRP)** (via `riskfolio-lib`)
-
-- **Risk & performance analytics**
-  - Annualized return, volatility, Sharpe ratio
-  - **Historical VaR/CVaR** (non‑parametric) on daily portfolio P&L
-  - **Monte Carlo (bootstrap)** of daily returns for 1/3/12‑month horizons, deterministic seed
-
-- **Backtesting**
-  - Monthly/Quarterly rebalancing
-  - Simple transaction costs in basis points applied to turnover
-  - Equity curve comparison vs. buy‑and‑hold, total return summary
-
-- **User experience**
-  - Single‑click “Run analysis” with **sticky results** (no partial live recompute)
-  - Wide sidebar for efficient data entry
-  - Clear, print‑ready tables and charts
+- Multiple optimization methods:
+  - **Mean-Variance** (max Sharpe, min volatility, target volatility)
+  - **CVaR (Conditional Value-at-Risk)**
+  - **HRP (Hierarchical Risk Parity)**
+- **Backtesting engine** with:
+  - Rolling window optimization
+  - Transaction costs & slippage modeling
+  - Benchmark comparison (SPY, equal-weight, 60/40)
+- **Monte Carlo simulations** (parametric & bootstrap) for forward-looking risk analysis
+- Interactive **visualizations** with Plotly & Matplotlib
+- Export results to **CSV (weights, metrics)** and **PNG (charts)**
+- Custom **UI styling** (CSS + Streamlit components)
 
 ---
 
-## 3. Methodology (at a glance)
+## 🖼️ Screenshots
 
-- **Returns & Covariance:** Daily log‑approx returns from adjusted close. Covariance estimated via **Ledoit–Wolf shrinkage**.  
-- **Mean Estimate:** Historical mean return (compounded) on the same daily series.  
-- **Regularization:** Small **L2 penalty** added in mean–variance programs to stabilize weights.  
-- **Annualization:** 252 trading days.  
-- **Risk Measures:**  
-  - **VaR/CVaR:** Historical (empirical) distribution of daily portfolio returns.  
-  - **Monte Carlo:** Non‑parametric resampling (bootstrap) of daily return vectors with optional periodic rebalancing and turnover costs.  
-- **Backtest:** Target weights drift between rebalances; turnover cost applied at each rebalance; baseline is buy‑and‑hold from initial weights.
+📌 Suggested places to add visuals:  
+- Dashboard home (screenshot)  
+- Efficient Frontier example (screenshot)  
+- Monte Carlo simulation (screenshot)  
+- Backtest performance curve (screenshot)  
+- Short GIF demo of a full run  
 
-**Limitations:** Historical estimates assume stationarity and i.i.d. daily draws in the bootstrap; regime shifts, liquidity, market impact, and tax frictions are not modeled.
+```markdown
+![Dashboard Home](images/dashboard_home.png)
+![Efficient Frontier](images/efficient_frontier.png)
+![Monte Carlo](images/montecarlo.png)
+![Backtest](images/backtest.png)
+```
 
----
-
-## 4. Data & Coverage
-
-- **Source:** Yahoo Finance via `yfinance` (adjusted close).  
-- **Frequency:** Daily (business days).  
-- **Coverage:** Dependent on ticker availability and corporate actions. Missing data are forward/back‑filled over short gaps only.  
-- **Quality Note:** Public data may contain anomalies; users should validate critical inputs independently.
+💡 Tip: include a short **GIF demo** (`images/demo.gif`) showing someone selecting tickers, running optimization, and viewing results.
 
 ---
 
-## 5. Controls & Governance
+## ⚡ Quick Start
 
-- **Determinism:** Monte Carlo uses a fixed seed for repeatability.  
-- **Transparency:** Inputs, parameters, and chosen optimizer are visible in the UI.  
-- **Bounded Weights:** Long‑only with configurable **max weight per asset**.  
-- **Optionality Flags:** UI enables CVaR/HRP only if dependencies (`cvxpy`, `riskfolio-lib`) are present.  
-- **Auditability:** The codebase is modular (`src/portfolio_app`) and can be reviewed or extended; results are reproducible with the same inputs.
+### 1️⃣ Option A — Run Online (Streamlit Cloud)
+Fastest way: click the badge above ☝️  
+No installation required.
 
 ---
 
-## 6. Installation & Launch
+### 2️⃣ Option B — Run Locally with Docker
 
-### Python Environment
+Clone the repo and build the container:
+
 ```bash
-# Create & activate a virtual environment (recommended)
+git clone https://github.com/<your-username>/portfolio-optimizer.git
+cd portfolio-optimizer
+docker build -t portfolio-opt .
+docker run -p 8501:8501 portfolio-opt
+```
+
+Then open [http://localhost:8501](http://localhost:8501) 🎉
+
+---
+
+### 3️⃣ Option C — Run Locally with Python
+
+```bash
+# Create and activate venv
 python -m venv .venv
-# Windows
-.venv\Scripts\activate
-# macOS / Linux
-source .venv/bin/activate
+source .venv/bin/activate    # (Windows: .venv\Scripts\activate)
 
 # Install dependencies
 pip install -r requirements.txt
+
+# Launch app
+streamlit run app.py
 ```
 
-### Run the Application
+---
+
+## 🧪 Testing
+
+Run the unit tests with:
+
 ```bash
-streamlit run app/main.py
+pytest -v
 ```
-(Optional) Place a custom background at `assets/background.jpg`.
+
+These tests validate:  
+- Optimizers output valid weight vectors  
+- Backtest logic runs on toy data  
+- Streamlit app loads without errors  
+
+CI (GitHub Actions) automatically runs tests on every push.
 
 ---
 
-## 7. Using the Application
+## 🛠️ Tech Stack
 
-1. **Universe:** Paste or add tickers in the sidebar (one per line).  
-2. **Dates:** Select start and end dates for data and backtesting.  
-3. **Optimization:** Choose method, risk‑free rate, and (where applicable) target volatility or CVaR β.  
-4. **Constraints:** Set maximum per‑asset weight.  
-5. **Rebalancing & Costs:** Choose Monthly/Quarterly; specify transaction costs in bps.  
-6. **Run:** Click **Run analysis**. Results remain fixed until the next run.  
-7. **Review Outputs:**  
-   - Price history for the starting universe  
-   - **Optimized Weights** (sorted by descending weight)  
-   - **Efficient Frontier** samples  
-   - **Metrics:** Annualized return/vol, Sharpe, VaR/CVaR, Monte Carlo  
-   - **Backtest:** Target vs buy‑and‑hold equity curves and total returns
+- **Python** (3.11)  
+- **Streamlit** (UI)  
+- **PyPortfolioOpt** (classical optimizers)  
+- **Riskfolio-Lib** (CVaR, HRP)  
+- **Pandas / NumPy / SciPy**  
+- **Plotly / Matplotlib**  
+- **Docker** (deployment)  
+- **GitHub Actions** (CI)  
 
 ---
 
-## 8. Configuration Notes
-
-- **Max weight per asset:** 5–100% slider; enforces diversification.  
-- **Risk‑free rate:** Used in Sharpe maximization and metrics.  
-- **CVaR β:** Tail confidence (e.g., 0.95); lower β increases tail sensitivity.  
-- **Monte Carlo horizon:** Select 1/3/12 months; rebalancing interval set by Monthly/Quarterly selection.  
-- **Transaction costs:** Applied to turnover at each rebalance in bps (1 bps = 0.01%).
-
----
-
-## 9. Extensibility Roadmap
-
-- **Additional constraints:** Sector caps, minimum weights, exclusion lists.  
-- **Factor views:** Black–Litterman priors; robust covariance estimators.  
-- **Multi‑asset support:** Bonds, commodities, FX; multi‑currency handling and FX hedging.  
-- **Reporting:** Exportable PDF/CSV reports; scenario save/load.  
-- **Deployment:** Containerization, CI/CD, and cloud hosting with authentication.  
-- **Testing:** Unit tests for data transforms, optimizers, and backtesting logic.
-
----
-
-## 10. Security & Privacy
-
-- The app does not collect personal data by default.  
-- If deployed in a shared environment, ensure appropriate **authentication**, **network controls**, and **logging**.  
-- Review third‑party data terms and conditions before production use.
-
----
-
-## 11. Compliance & Disclaimers
-
-- This tool is not a portfolio management service and does not provide investment advice or solicitations.  
-- Outputs are model‑based estimates subject to input quality and modeling assumptions.  
-- Users are responsible for independent due diligence and regulatory compliance in their jurisdiction.
-
----
-
-## 12. Technical Stack
-
-- **UI:** Streamlit, Plotly  
-- **Quant:** PyPortfolioOpt, NumPy, Pandas  
-- **Data:** `yfinance` (Yahoo Finance adjusted close)  
-- **Optional:** `cvxpy` (CVaR), `riskfolio-lib` (HRP)
-
----
-
-## 13. Repository Layout
+## 📂 Project Structure
 
 ```
-.
-├─ app/
-│  └─ main.py                 # Streamlit entry point
-├─ src/
-│  └─ portfolio_app/
-│     ├─ __init__.py          # package metadata
-│     ├─ ui.py                # CSS, banner, disclaimer, background, sidebar width
-│     ├─ data.py              # price download + daily returns
-│     ├─ optimizers.py        # MV, Target-Vol, Min-CVaR, HRP (+ capability flags)
-│     ├─ metrics.py           # frontier sampling, metrics, VaR/CVaR, Monte Carlo
-│     └─ backtest.py          # rebalance vs buy & hold, turnover cost
-├─ assets/
-│  └─ background.jpg          # optional
-├─ requirements.txt
-└─ README.md
+├── app.py                # Streamlit app entry point
+├── optimizers.py         # Mean-Variance, HRP, CVaR functions
+├── backtest.py           # Rolling window backtest engine
+├── montecarlo.py         # Monte Carlo simulations
+├── metrics.py            # Risk & performance metrics
+├── tests/                # Unit tests (pytest)
+├── requirements.txt
+├── Dockerfile
+├── docker-compose.yml
+└── README.md
 ```
 
 ---
 
-## 14. Contact
+## 📈 Roadmap / Future Enhancements
 
-For client demonstrations, integration discussions, or a technical walkthrough, please reach out to the project maintainer.
+- Sector & turnover constraints  
+- Live data via Yahoo Finance / Tiingo APIs  
+- Factor-model risk attribution  
+- Kubernetes deployment (multi-service setup)  
+
+---
+
+## 🤝 Contributing
+
+Pull requests welcome!  
+For major changes, open an issue first to discuss what you’d like to add.  
+
+---
+
+## 👤 Author
+
+**Florent Chaillie**  
+Finance & Data Science professional  
+- 💼 [LinkedIn](https://www.linkedin.com/in/your-linkedin/)  
+- 💻 [GitHub](https://github.com/your-username)
+
+---
+
+## 📜 License
+
+This project is licensed under the MIT License.
