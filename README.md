@@ -5,10 +5,8 @@ Built with **Python, PyPortfolioOpt, Riskfolio-Lib, and Streamlit** — designed
 
 ---
 
-## 🚀 Live Demo
-
-👉 Try it instantly on **Streamlit Cloud**:  
-[![Streamlit](https://img.shields.io/badge/Streamlit-Live%20App-FF4B4B?logo=streamlit&logoColor=white)](https://your-streamlit-app.streamlit.app)
+## 🌐 Live Demo
+👉 [Always-On App (Fly.io)](https://portfolio-optimizer-fchaillie.fly.dev)
 
 ---
 
