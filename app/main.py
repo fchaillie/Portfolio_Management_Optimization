@@ -14,6 +14,11 @@ import pandas as pd
 import streamlit as st
 from plotly import graph_objects as go
 
+
+# 🔑 Load API keys / config from environment variables
+TIINGO_API_KEY = os.getenv("TIINGO_API_KEY")
+DATA_PROVIDER = os.getenv("DATA_PROVIDER", "yahoo")
+
 # Ensure project ROOT is importable (so "src" package can be found when running via `streamlit run app/main.py`)
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
 
