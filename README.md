@@ -135,31 +135,6 @@ CI (GitHub Actions) automatically runs tests on every push.
 
 ---
 
-## 📈 Roadmap / Future Enhancements
-
-- Sector & turnover constraints  
-- Live data via Yahoo Finance / Tiingo APIs  
-- Factor-model risk attribution  
-- Kubernetes deployment (multi-service setup)  
-
----
-
-## 🤝 Contributing
-
-Pull requests welcome!  
-For major changes, open an issue first to discuss what you’d like to add.  
-
----
-
-## 👤 Author
-
-**Florent Chaillie**  
-Finance & Data Science professional  
-- 💼 [LinkedIn](https://www.linkedin.com/in/your-linkedin/)  
-- 💻 [GitHub](https://github.com/your-username)
-
----
-
 ## 📜 License
 
 This project is licensed under the MIT License.
