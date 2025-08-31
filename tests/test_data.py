@@ -1,8 +1,9 @@
 import pandas as pd
 from portfolio_app.data import get_price_data, daily_returns
 from unittest.mock import patch
+import portfolio_app.data as data_module
 
-@patch("portfolio_app.data.get_price_data")
+@patch.object(data_module, "get_price_data")
 def test_get_price_data_returns_dataframe(mock_get):
     """
     Test that get_price_data returns a valid DataFrame with the requested tickers.
@@ -40,7 +41,7 @@ def test_daily_returns_shape():
         {"AAPL": [100, 102, 101, 103], "MSFT": [200, 198, 202, 204]}, index=dates
     )
 
-    rets = daily_returns(prices)
+    rets = data_module.daily_returns(prices)
 
     assert isinstance(rets, pd.DataFrame)  # Output type
     assert rets.shape[0] == prices.shape[0] - 1  # Should have N-1 rows
