@@ -27,7 +27,7 @@ jobs:
           pip install pytest
 
       - name: Run tests
-        run: PYTHONPATH=. pytest -v
+        run: PYTHONPATH=./src pytest -v
 
   deploy:
     name: Deploy app

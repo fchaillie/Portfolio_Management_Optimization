@@ -1,8 +1,8 @@
 import pandas as pd
-from src.portfolio_app.data import get_price_data, daily_returns
+from portfolio_app.data import get_price_data, daily_returns
 from unittest.mock import patch
 
-@patch("src.portfolio_app.data.get_price_data")
+@patch("portfolio_app.data.get_price_data")
 def test_get_price_data_returns_dataframe(mock_get):
     """
     Test that get_price_data returns a valid DataFrame with the requested tickers.
