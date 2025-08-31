@@ -1,0 +1,30 @@
+# Git and CI/CD
+.git
+.github
+
+# Python caches
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+*.pytest_cache/
+.mypy_cache/
+
+# Virtual environments
+.venv/
+env/
+venv/
+
+# OS / editor artifacts
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+
+# Docs, images, markdown 
+*.md
+images/
+
+# Secrets 
+.streamlit/secrets.toml
