@@ -2,32 +2,22 @@
 
 Here is my interactive dashboard for portfolio optimization, risk analysis, Monte Carlo simulations and backtesting.  
 Built with Python and Streamlit, this project brings **quantitative finance** concepts to life letting users explore and compare investment strategies in real time.
-Whether you're a trader, an investor or a recruiter curious about my technical & financial skills, this dashboard shows how I combine **data science, portfolio theory, and modern deployment practices** to build tools that solve real-world problems.
+Whether you're a trader, an investor or a recruiter curious about my technical & financial skills, this dashboard shows how I combine **data science, portfolio theory and modern deployment practices** to build tools that solve real-world problems.
 
 ---
 
 ## 🌐 [Live Demo](https://portfolio-optimizer-fchaillie.fly.dev)
 
----
-
 ![CI/CD Pipeline](https://github.com/fchaillie/Portfolio_Management_Optimization/actions/workflows/ci-cd.yaml/badge.svg)
 
 ---
 
-## ✨ Features
-
-- Multiple optimization methods:
-  - **Mean-Variance** (max Sharpe, min volatility, target volatility)
-  - **CVaR (Conditional Value-at-Risk)**
-  - **HRP (Hierarchical Risk Parity)**
-- **Backtesting engine** with:
-  - Rolling window optimization
-  - Transaction costs & slippage modeling
-  - Benchmark comparison (SPY, equal-weight, 60/40)
-- **Monte Carlo simulations** (parametric & bootstrap) for forward-looking risk analysis
-- Interactive **visualizations** with Plotly & Matplotlib
-- Export results to **CSV (weights, metrics)** and **PNG (charts)**
-- Custom **UI styling** (CSS + Streamlit components)
+### 🌟 What makes it special?
+- 📊 **Dynamic Portfolio Optimization** — Mean-Variance, CVaR and Target Volatility models at your fingertips.  
+- 🎲 **Monte Carlo Simulations** — Explore thousands of portfolio scenarios instantly.  
+- 🔄 **Backtesting Engine** — See how strategies would have performed historically.  
+- 🎨 **Polished UI** — Simple graphs and tables making finance insights easy to understand.  
+- ☁️ **Easy Access** — Try it online via Streamlit Cloud or deploy it anywhere via Docker in just one command.  
 
 ---
 
