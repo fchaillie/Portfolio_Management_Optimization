@@ -74,22 +74,6 @@ Then open [http://localhost:8501](http://localhost:8501) 🎉
 
 ---
 
-### 3️⃣ Option C — Run Locally with Python
-
-```bash
-# Create and activate venv
-python -m venv .venv
-source .venv/bin/activate    # (Windows: .venv\Scripts\activate)
-
-# Install dependencies
-pip install -r requirements.txt
-
-# Launch app
-streamlit run app.py
-```
-
----
-
 ## 🧪 Testing
 
 Run the unit tests with:
