@@ -6,9 +6,8 @@ Whether you're a trader, an investor or a recruiter curious about my technical &
 
 ---
 
-## 🌐 Live Demo
-👉 (https://portfolio-optimizer-fchaillie.fly.dev)
-#[Always-On App (Fly.io)]
+## 🌐 [Live Demo)](https://portfolio-optimizer-fchaillie.fly.dev)
+
 ---
 
 ![CI/CD Pipeline](https://github.com/fchaillie/Portfolio_Management_Optimization/actions/workflows/ci-cd.yaml/badge.svg)
