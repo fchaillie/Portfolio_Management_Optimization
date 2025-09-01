@@ -1,13 +1,14 @@
 # 📊 Portfolio Optimization & Risk Dashboard
 
-An interactive **Streamlit dashboard** for portfolio optimization, risk analysis, Monte Carlo simulations, and backtesting.  
-Built with **Python, PyPortfolioOpt, Riskfolio-Lib, and Streamlit** — designed to showcase both financial knowledge and data engineering skills.
+Here is my interactive dashboard for portfolio optimization, risk analysis, Monte Carlo simulations and backtesting.  
+Built with Python and Streamlit, this project brings **quantitative finance** concepts to life letting users explore and compare investment strategies in real time.
+Whether you're a trader, an investor or a recruiter curious about my technical & financial skills, this dashboard shows how I combine **data science, portfolio theory, and modern deployment practices** to build tools that solve real-world problems.
 
 ---
 
 ## 🌐 Live Demo
-👉 [Always-On App (Fly.io)](https://portfolio-optimizer-fchaillie.fly.dev)
-
+👉 (https://portfolio-optimizer-fchaillie.fly.dev)
+#[Always-On App (Fly.io)]
 ---
 
 ![CI/CD Pipeline](https://github.com/fchaillie/Portfolio_Management_Optimization/actions/workflows/ci-cd.yaml/badge.svg)
