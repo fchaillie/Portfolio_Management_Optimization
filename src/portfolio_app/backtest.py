@@ -17,7 +17,7 @@ def backtest(
     prices : DataFrame of asset prices (columns = tickers)
     weights: dict of target weights (sums to 1)
     freq   : "M" (monthly) or "Q" (quarterly) schedule for rebalancing
-    txn_cost_bps: simple transaction cost charged on turnover at each rebalance
+    txn_cost_bps: simple transaction cost charged on turnover at each rebalancing
 
     Returns
     -------

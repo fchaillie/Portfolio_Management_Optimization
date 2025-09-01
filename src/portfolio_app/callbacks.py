@@ -37,7 +37,6 @@ def cb_add() -> None:
         st.session_state["tickers_text"] = "\n".join(sorted(set(cur)))
         st.session_state["new_ticker"] = ""
     except Exception:
-        # Silently ignore failures (bad symbol, temporary network error, etc.)
         pass
 
 

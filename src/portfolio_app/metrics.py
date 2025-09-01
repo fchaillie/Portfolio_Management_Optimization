@@ -1,6 +1,6 @@
 """
 Metrics and simulations: efficient frontier sampling, annualized metrics,
-simple historical VaR/CVaR, and a bootstrapped Monte Carlo over daily returns.
+simple historical VaR/CVaR and a bootstrapped Monte Carlo over daily returns.
 """
 
 from __future__ import annotations
@@ -18,7 +18,7 @@ def est_mu_S(returns: pd.DataFrame):
     """
     Estimate expected returns (mu) and covariance (S) once, with caching.
     - mu: historical mean return (compounded) using daily returns.
-    - S : Ledoit–Wolf shrinkage covariance on daily returns.
+    - S : Ledoit-Wolf shrinkage covariance on daily returns.
     """
     mu = mean_historical_return(returns, compounding=True, returns_data=True)
     S = CovarianceShrinkage(returns, returns_data=True).ledoit_wolf()
@@ -63,7 +63,7 @@ def port_metrics(returns: pd.DataFrame, weights: dict, rfr: float = 0.0) -> dict
 
 def hist_var_cvar(returns: pd.DataFrame, weights: dict, alpha: float = 0.95) -> dict:
     """
-    Historical daily VaR and CVaR for the weighted portfolio at confidence `alpha`.
+    Historical daily VaR and CVaR for the weighted portfolio at VaR/CVaR confidence level.
     """
     w = np.array([weights.get(c, 0.0) for c in returns.columns])
     pr = (returns.to_numpy() * w).sum(axis=1)

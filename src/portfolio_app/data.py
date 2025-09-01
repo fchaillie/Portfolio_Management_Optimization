@@ -1,6 +1,6 @@
 """
 Data utilities: download prices and compute daily returns.
-Each function is small, testable, and type-annotated where helpful.
+Each function is small, testable and type-annotated where helpful.
 """
 
 from __future__ import annotations

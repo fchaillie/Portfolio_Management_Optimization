@@ -19,15 +19,14 @@ from plotly import graph_objects as go
 TIINGO_API_KEY = os.getenv("TIINGO_API_KEY")
 DATA_PROVIDER = os.getenv("DATA_PROVIDER", "yahoo")
 
-# Ensure project ROOT is importable (so "src" package can be found when running via `streamlit run app/main.py`)
+# Ensure project ROOT is importable
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
 
 # Import from our package
 from src.portfolio_app.ui import (
     inject_global_css_banner_and_disclaimer,
     apply_background_image,
-    set_sidebar_width,
-)
+    set_sidebar_width)
 from src.portfolio_app.data import get_price_data, daily_returns
 from src.portfolio_app.optimizers import (
     optimize_mv,
@@ -35,14 +34,12 @@ from src.portfolio_app.optimizers import (
     optimize_min_cvar,
     optimize_hrp,
     HAS_CVXPY,
-    HAS_RISKFOLIO,
-)
+    HAS_RISKFOLIO)
 from src.portfolio_app.metrics import (
     sample_frontier,
     port_metrics,
     hist_var_cvar,
-    mc_stats_only,
-)
+    mc_stats_only)
 from src.portfolio_app.backtest import backtest
 from src.portfolio_app.callbacks import current_list, cb_add, cb_remove
 
@@ -54,8 +51,10 @@ st.set_page_config(
     initial_sidebar_state="expanded",
 )
 inject_global_css_banner_and_disclaimer()
-apply_background_image()  # looks for assets/background.jpg
-set_sidebar_width(520)  # widen sidebar
+# Looks for assets/background.jpg
+apply_background_image()  
+# Widen sidebar
+set_sidebar_width(520)  
 
 
 # ---------- Session bootstrapping ----------
@@ -259,7 +258,7 @@ if run_btn:
             st.error(f"Optimization failed: {e}")
             st.stop()
 
-        # Metrics, frontier, risk, Monte Carlo, and backtest
+        # Metrics, frontier, risk, Monte Carlo and backtest
         metrics = port_metrics(rets, weights, rfr=risk_free_rate)
         frontier = sample_frontier(rets, n_points=frontier_n)
         vr = hist_var_cvar(rets, weights, alpha=0.95)
@@ -288,18 +287,17 @@ if run_btn:
         "summ_bt": summ_bt,
         "horizon": horizon,
         "rebal_choice": rebal_choice,
-        "eq_perf_value": eq_perf_value,
+        "eq_perf_value": eq_perf_value
     }
 
 # ---------- Display ----------
 res = st.session_state.results
-if res is None:
-    # Friendly instructions card
 
+if res is None:
+    
+    # Intro to the dashboard and disclaimer below
     st.markdown(
         """
-
-    
         <div style="display:flex; justify-content:center; margin-top: 10px;">
           <div style="background-color: yellow; padding: 20px; font-size: 1.6rem; font-weight: bold; color: black;
                       border-radius: 12px; box-shadow: 0 2px 6px rgba(0,0,0,0.06); text-align: left; display: table;">
@@ -338,7 +336,7 @@ else:
     """,
     unsafe_allow_html=True,
     )    
-
+    # Graph of the performance of each chosen stock on the period chosen
     fig = go.Figure()
     for c in prices.columns:
         fig.add_trace(go.Scatter(x=prices.index, y=prices[c], mode="lines", name=c))
@@ -347,6 +345,7 @@ else:
     )
     st.plotly_chart(fig, use_container_width=True, config={"displayModeBar": False})
 
+    # Explanation of 1st graph
     st.markdown(
         """
         <div style="display:flex; justify-content:center; margin-top: 0px;">
@@ -359,7 +358,7 @@ else:
         unsafe_allow_html=True,
     )
 
-    # Frontier
+    # Efficient Frontier title, graph and explanation
     st.markdown(
         """
         <div style="background: white; padding: 4px 12px; margin: 60px 0 18px 0; text-align: center;
@@ -435,7 +434,7 @@ else:
         unsafe_allow_html=True,
     )
 
-    # --- Build weights_df (sorted by weight DESC) ---
+    # Build weights_df (sorted by weight DESC)
     if isinstance(weights, pd.Series):
         # Series -> DataFrame with explicit columns
         weights_df = weights.rename_axis("Ticker").reset_index(name="Weight")
@@ -446,7 +445,7 @@ else:
         st.warning("⚠️ No weights found. Please run the analysis.")
         weights_df = pd.DataFrame(columns=["Ticker", "Weight"])
 
-    # Ensure numeric, drop zero weights, then sort DESC **before** formatting to %
+    # Ensure numeric, drop zero weights then sort DESC **before** formatting to %
     weights_df["Weight"] = pd.to_numeric(weights_df["Weight"], errors="coerce").fillna(
         0.0
     )
@@ -459,7 +458,7 @@ else:
     # Now format for display
     weights_df["Weight"] = (weights_df["Weight"] * 100).round(1).astype(str) + "%"
 
-    # Render as styled HTML (unchanged)
+    # Render as styled HTML
     st.markdown(
         """
         <style>
@@ -487,7 +486,7 @@ else:
     """,
         unsafe_allow_html=True,
     )
-
+    # Explanation
     st.markdown(
         """
         <div style="display:flex; justify-content:center; margin-top: 0px;">
@@ -500,7 +499,7 @@ else:
         unsafe_allow_html=True,
     )
 
-    # Backtest
+    # Optimized portfolio Backtest
     st.markdown(
         f"""
         <div style="background: white; padding: 4px 12px; margin: 60px 0 18px 0; text-align: center;
@@ -554,7 +553,7 @@ else:
         unsafe_allow_html=True,
     )
 
-    # Metrics tables
+    # Backtest and forward tests (Monte Carlo) metrics tables
     st.markdown(
         f"""
         <div style="background: white; padding: 4px 12px; margin: 60px 0 0px 0; text-align: center;

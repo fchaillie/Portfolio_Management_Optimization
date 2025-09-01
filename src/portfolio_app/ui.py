@@ -1,6 +1,6 @@
 """
 UI helpers: global CSS, banner, disclaimer, background image and sidebar width.
-These utilities are intentionally content-agnostic and only deal with presentation.
+These utilities only deal with presentation.
 """
 
 from __future__ import annotations
@@ -10,8 +10,10 @@ from pathlib import Path
 import streamlit as st
 
 # ---- Public constants ----
-DEFAULT_BG_PATH = "assets/background.jpg"  # expected location for the background image
-DEFAULT_SIDEBAR_WIDTH_PX = 540  # makes the sidebar wide enough for dense controls
+# Expected location for the background image
+DEFAULT_BG_PATH = "assets/background.jpg"  
+# Makes the sidebar wide enough for dense controls
+DEFAULT_SIDEBAR_WIDTH_PX = 540  
 
 
 @st.cache_resource
@@ -118,7 +120,7 @@ def apply_background_image(
     path: str = DEFAULT_BG_PATH, overlay_rgba: str = "rgba(0,0,0,0.10)"
 ) -> None:
     """
-    Reads an image from `path` (cached), encodes it as base64, and applies it as a fixed full-screen
+    Reads an image from `path` (cached), encodes it as base64 and applies it as a fixed full-screen
     background with a dark overlay. The overlay improves contrast for foreground widgets.
     """
 

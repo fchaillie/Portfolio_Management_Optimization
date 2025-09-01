@@ -17,7 +17,7 @@ Whether you're a trader, an investor or a recruiter curious about my technical &
 - 🎲 **Monte Carlo Simulations** — Explore thousands of portfolio scenarios instantly.  
 - 🔄 **Backtesting Engine** — See how strategies would have performed historically.  
 - 🎨 **Polished UI** — Simple graphs and tables making finance insights easy to understand.  
-- ☁️ **Easy Access** — Try it online via Streamlit Cloud or deploy it anywhere via Docker in just one command.  
+- ☁️ **Easy Access** — Try it online now or deploy it anywhere via Docker in just one command.  
 
 ---
 
@@ -87,7 +87,7 @@ Tests are run locally with **pytest** and automatically in CI/CD via **GitHub Ac
 - **Python** (3.11)  
 - **Streamlit** (UI)  
 - **PyPortfolioOpt** (classical optimizers)  
-- **Riskfolio-Lib** (CVaR, HRP)  
+- **Riskfolio-Lib** (CVaR)  
 - **Pandas / NumPy / SciPy**  
 - **Plotly / Matplotlib**  
 - **Docker** (deployment)  

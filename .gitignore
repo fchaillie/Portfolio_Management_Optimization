@@ -39,7 +39,7 @@ dist/
 .eggs/
 pip-wheel-metadata/
 *.whl
-
+docker/
 # -------------------------
 # Caches / Coverage / Test
 # -------------------------
