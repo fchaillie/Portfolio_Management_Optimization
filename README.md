@@ -24,30 +24,28 @@ Whether you're a trader, an investor or a recruiter curious about my technical &
 ## 🖼️ Screenshots
 
 📌 Suggested places to add visuals:  
-- Dashboard home (screenshot)
-![alt text](image-1.png)
+- Dashboard home
+![alt text](assets/image-1.png)
 
+- Equally weighted chosen portfolio backtest performance
+![alt text](assets/image-2.png)
 
-- Efficient Frontier example (screenshot)  
-- Monte Carlo simulation (screenshot)  
-- Backtest performance curve (screenshot)  
-- Short GIF demo of a full run  
+- Efficient Frontier
+![alt text](assets/image-4.png)
 
-```markdown
-![Dashboard Home](images/dashboard_home.png)
-![Efficient Frontier](images/efficient_frontier.png)
-![Monte Carlo](images/montecarlo.png)
-![Backtest](images/backtest.png)
-```
+- Optimized portfolio backtest performance 
+![alt text](assets/image-5.png)
 
-💡 Tip: include a short **GIF demo** (`images/demo.gif`) showing someone selecting tickers, running optimization, and viewing results.
+- Optimized portfolio backtest and forward looking (Monte Carlo) metrics 
+![alt text](assets/image-6.png)
+
 
 ---
 
 ## ⚡ Quick Start
 
-### 1️⃣ Option A — Run Online (Streamlit Cloud)
-Fastest way: click the badge above ☝️  
+### 1️⃣ Option A — Run Online
+Fastest way: click the badgelink aboveat the top ☝️  
 No installation required.
 
 ---
