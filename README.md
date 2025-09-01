@@ -22,6 +22,8 @@ Whether you're a trader, an investor or a recruiter curious about my technical &
 ---
 
 ## 🖼️ Screenshots
+![alt text](image.png)
+
 
 📌 Suggested places to add visuals:  
 - Dashboard home (screenshot)  
