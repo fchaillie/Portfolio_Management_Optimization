@@ -49,7 +49,7 @@ Whether you're a trader, an investor or a recruiter curious about my technical &
 ## ⚡ Quick Start
 
 ### 1️⃣ Option A — Run Online
-Fastest way: click the link at the top ☝️  
+[Live Demo](https://portfolio-optimizer-fchaillie.fly.dev) 
 No installation required.
 
 ---
