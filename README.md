@@ -50,6 +50,7 @@ Whether you're a trader, an investor or a recruiter curious about my technical &
 
 ### 1️⃣ Option A — Run Online
 [Live Demo](https://portfolio-optimizer-fchaillie.fly.dev) 
+
 No installation required.
 
 ---
