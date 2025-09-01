@@ -197,7 +197,6 @@ if run_btn:
         n = len(prices.columns)
         weights_eq = np.repeat(1/n, n)
         eq_portfolio_returns = rets.dot(weights_eq)
-
         cum_return = (1 + eq_portfolio_returns).prod() - 1
         eq_perf_value = round(cum_return * 100, 1)
         
@@ -546,36 +545,19 @@ else:
         return f"{x:.1%}"
 
     left = [
+        (f"Total Return (Target, {rebal_choice} rebal.)", fp(summ_bt["TotalReturn_Target"])),
+        ("Total Return (Buy & Hold)", fp(summ_bt["TotalReturn_Buy&Hold"])),
         ("Annualized Return", fp(metrics["ann_return"])),
         ("Annualized Volatility", fp(metrics["ann_vol"])),
         ("Sharpe Ratio", f"{metrics['sharpe']:.2f}"),
         ("Daily VaR (95%)", fp(vr["VaR"])),
-        ("Daily CVaR (95%)", fp(vr["CVaR"])),
-        (
-            f"Total Return (Target, {rebal_choice} rebal.)",
-            fp(summ_bt["TotalReturn_Target"]),
-        ),
-        ("Total Return (Buy & Hold)", fp(summ_bt["TotalReturn_Buy&Hold"])),
-    ]
+        ("Daily CVaR (95%)", fp(vr["CVaR"]))]
     right = [
-        (
-            f"Monte Carlo simulations return prob. 5% ({months_of_horizon} M)",
-            fp(mc_stats["p5"]),
-        ),
-        (
-            f"Monte Carlo simulations return prob. 50% ({months_of_horizon} M)",
-            fp(mc_stats["p50"]),
-        ),
-        (
-            f"Monte Carlo simulations return prob. 95% ({months_of_horizon} M)",
-            fp(mc_stats["p95"]),
-        ),
-        (
-            f"Monte Carlo simulations Expected return ({months_of_horizon} M)",
-            fp(mc_stats["mean"]),
-        ),
-        (f"Monte Carlo simulations std ({months_of_horizon} M)", fp(mc_stats["std"])),
-    ]
+        (f"Monte Carlo simulations return prob. 5% ({months_of_horizon} M)",fp(mc_stats["p5"])),
+        (f"Monte Carlo simulations return prob. 50% ({months_of_horizon} M)",fp(mc_stats["p50"])),
+        (f"Monte Carlo simulations return prob. 95% ({months_of_horizon} M)",fp(mc_stats["p95"])),
+        (f"Monte Carlo simulations Expected return ({months_of_horizon} M)",fp(mc_stats["mean"])),
+        (f"Monte Carlo simulations std ({months_of_horizon} M)", fp(mc_stats["std"]))]
 
     cL, cR = st.columns(2)
     with cL:
