@@ -178,7 +178,15 @@ with st.sidebar:
 if run_btn:
     tickers = sorted(set(current_list()))
     if not tickers:
-        st.error("Your ticker list is empty.")
+        st.markdown(
+        """
+        <div style="background-color:white; padding:10px; border-radius:5px; 
+                    font-weight:bold; color:black; text-align:center;">
+            Your ticker list is empty
+        </div>
+        """,
+        unsafe_allow_html=True
+        )
         st.stop()
 
     with st.spinner("Fetching data & computing..."):
@@ -189,7 +197,15 @@ if run_btn:
             end=(end_date + timedelta(days=1)).isoformat(),
         )
         if prices.empty:
-            st.error("No data fetched. Check tickers or dates.")
+            st.markdown(
+            """
+            <div style="background-color:white; padding:10px; border-radius:5px; 
+                        font-weight:bold; color:black; text-align:center;">
+                No data fetched. Check tickers or dates
+            </div>
+            """,
+            unsafe_allow_html=True
+            )
             st.stop()
         rets = daily_returns(prices).replace([np.inf, -np.inf], pd.NA).dropna(how="any")
 
