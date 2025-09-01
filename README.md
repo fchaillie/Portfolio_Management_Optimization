@@ -10,7 +10,7 @@ Built with **Python, PyPortfolioOpt, Riskfolio-Lib, and Streamlit** — designed
 
 ---
 
-![CI/CD Pipeline](https://github.com/Portfolio_Management_Optimization/actions/workflows/ci-cd.yaml/badge.svg)
+![CI/CD Pipeline](https://github.com/fchaillie/Portfolio_Management_Optimization/actions/workflows/ci-cd.yaml/badge.svg)
 
 ---
 
