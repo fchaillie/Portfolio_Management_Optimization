@@ -49,7 +49,7 @@ Whether you're a trader, an investor or a recruiter curious about my technical &
 ## ⚡ Quick Start
 
 ### 1️⃣ Option A — Run Online
-Fastest way: click the badgelink aboveat the top ☝️  
+Fastest way: click the link at the top ☝️  
 No installation required.
 
 ---
@@ -71,18 +71,13 @@ Then open [http://localhost:8501](http://localhost:8501) 🎉
 
 ## 🧪 Testing
 
-Run the unit tests with:
+This project includes unit tests to ensure correctness and reliability:
 
-```bash
-pytest -v
-```
+- **Data validation**: checks that price data is returned as a non-empty Pandas DataFrame with all requested tickers.  
+- **Metrics**: verifies daily returns and portfolio performance metrics are calculated correctly.  
+- **Optimizers**: ensures portfolio optimizers (e.g., Max Sharpe, Min Volatility) return valid weights that sum to 1.  
 
-These tests validate:  
-- Optimizers output valid weight vectors  
-- Backtest logic runs on toy data  
-- Streamlit app loads without errors  
-
-CI (GitHub Actions) automatically runs tests on every push.
+Tests are run locally with **pytest** and automatically in CI/CD via **GitHub Actions**, guaranteeing stable builds and reproducible results.
 
 ---
 
@@ -101,17 +96,15 @@ CI (GitHub Actions) automatically runs tests on every push.
 
 ## 📂 Project Structure
 
-```
-├── app.py                # Streamlit app entry point
-├── optimizers.py         # Mean-Variance, HRP, CVaR functions
-├── backtest.py           # Rolling window backtest engine
-├── montecarlo.py         # Monte Carlo simulations
-├── metrics.py            # Risk & performance metrics
-├── tests/                # Unit tests (pytest)
-├── requirements.txt
-├── Dockerfile
-├── docker-compose.yml
-└── README.md
+```bash
+Portfolio_Management_Optimization/
+├── app/ # Streamlit app (UI)
+├── src/portfolio_app/ # Core logic (data, optimizers, backtest, metrics)
+├── tests/ # Unit tests
+├── assets/ # Images for README and dashboard deployed
+├── requirements.txt # Python dependencies
+├── Dockerfile # Deployment config
+└── README.md # Documentation
 ```
 
 ---
