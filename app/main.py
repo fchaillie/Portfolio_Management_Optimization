@@ -46,6 +46,10 @@ from src.portfolio_app.metrics import (
 from src.portfolio_app.backtest import backtest
 from src.portfolio_app.callbacks import current_list, cb_add, cb_remove
 
+# It keeps this variable to None when the button is not pressed but options are being changed
+if "eq_perf_value" not in st.session_state:
+    st.session_state["eq_perf_value"] = None
+
 # ---------- One-shot global UI ----------
 st.set_page_config(
     page_title="Design your investment strategy",
@@ -197,6 +201,7 @@ if run_btn:
         n = len(prices.columns)
         weights_eq = np.repeat(1/n, n)
         eq_portfolio_returns = rets.dot(weights_eq)
+        st.session_state["eq_perf_value"] = eq_perf_value
 
         cum_return = (1 + eq_portfolio_returns).prod() - 1
         eq_perf_value = round(cum_return * 100, 1)
@@ -303,15 +308,16 @@ else:
     eq_bt, summ_bt = res["eq_bt"], res["summ_bt"]
     horizon, rebal_choice = res["horizon"], res["rebal_choice"]
 
-    st.markdown(
-        f"""
-        <div style="background: white; padding: 4px 12px; margin: 4px 0 18px 0; text-align: center;
-                    font-size: 2.0rem; font-weight: bold; color: black; box-shadow: 0 2px 6px rgba(0,0,0,0.06);">
-            Starting portfolio equally weighted<br> backtest performance: {eq_perf_value}%
-        </div>
-        """,
-        unsafe_allow_html=True,
-    )
+    if st.session_state["eq_perf_value"] is not None:
+        st.markdown(
+            f"""
+            <div style="background: white; padding: 4px 12px; margin: 4px 0 18px 0; text-align: center;
+                        font-size: 2.0rem; font-weight: bold; color: black; box-shadow: 0 2px 6px rgba(0,0,0,0.06);">
+                Starting portfolio equally weighted<br> backtest performance: {eq_perf_value}%
+            </div>
+            """,
+            unsafe_allow_html=True,
+        )
     fig = go.Figure()
     for c in prices.columns:
         fig.add_trace(go.Scatter(x=prices.index, y=prices[c], mode="lines", name=c))
