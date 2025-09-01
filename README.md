@@ -60,8 +60,8 @@ No installation required.
 Clone the repo and build the container:
 
 ```bash
-git clone https://github.com/<your-username>/portfolio-optimizer.git
-cd portfolio-optimizer
+git clone https://github.com/fchaillie/Portfolio_Management_Optimization.git
+cd Portfolio_Management_Optimization
 docker build -t portfolio-opt .
 docker run -p 8501:8501 portfolio-opt
 ```
