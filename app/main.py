@@ -192,6 +192,15 @@ if run_btn:
             st.error("No data fetched. Check tickers or dates.")
             st.stop()
         rets = daily_returns(prices).replace([np.inf, -np.inf], pd.NA).dropna(how="any")
+
+        # Equally weighted starting portfolio performance
+        n = len(prices.columns)
+        weights_eq = np.repeat(1/n, n)
+        eq_portfolio_returns = rets.dot(weights_eq)
+
+        cum_return = (1 + eq_portfolio_returns).prod() - 1
+        eq_perf_value = round(cum_return * 100, 1)
+        
         if rets.shape[0] < 30:
             st.error("Not enough clean return data after filtering.")
             st.stop()
@@ -295,10 +304,10 @@ else:
     horizon, rebal_choice = res["horizon"], res["rebal_choice"]
 
     st.markdown(
-        """
+        f"""
         <div style="background: white; padding: 4px 12px; margin: 4px 0 18px 0; text-align: center;
                     font-size: 2.0rem; font-weight: bold; color: black; box-shadow: 0 2px 6px rgba(0,0,0,0.06);">
-            Starting portfolio equally weighted backtest performance:
+            Starting portfolio equally weighted backtest performance:{eq_perf_value}
         </div>
         """,
         unsafe_allow_html=True,
