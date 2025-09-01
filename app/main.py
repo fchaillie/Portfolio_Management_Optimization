@@ -201,7 +201,7 @@ if run_btn:
         cum_return = (1 + eq_portfolio_returns).prod() - 1
         eq_perf_value = round(cum_return * 100, 1)
         
-        if rets.shape[0] < 30:
+        if rets.shape[0] < 3:
             st.error("Not enough clean return data after filtering.")
             st.stop()
 
