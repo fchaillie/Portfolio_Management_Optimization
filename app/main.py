@@ -307,7 +307,7 @@ else:
         f"""
         <div style="background: white; padding: 4px 12px; margin: 4px 0 18px 0; text-align: center;
                     font-size: 2.0rem; font-weight: bold; color: black; box-shadow: 0 2px 6px rgba(0,0,0,0.06);">
-            Starting portfolio equally weighted backtest performance:{eq_perf_value}
+            Starting portfolio equally weighted backtest performance: {eq_perf_value}%
         </div>
         """,
         unsafe_allow_html=True,
