@@ -272,7 +272,7 @@ if res is None:
             1) Enter the tickers of the stocks you're open to invest in<br>
             2) Choose your objectives, risk appetite and investment horizon<br>
             3) Click "Run analysis"<br>
-            4) Get your customized stock portfolio !
+            4) Get your ideal stock portfolio to invest in !
           </div>
         </div>
 
