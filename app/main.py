@@ -252,16 +252,6 @@ if run_btn:
             prices, weights, freq=bt_freq, txn_cost_bps=txn_cost_bps
         )
 
-        # Title of first graph showing equally weighted starting potfolio backtest performance
-        st.markdown(
-        f"""
-        <div style="background: white; padding: 4px 12px; margin: 4px 0 18px 0; text-align: center;
-                    font-size: 2.0rem; font-weight: bold; color: black; box-shadow: 0 2px 6px rgba(0,0,0,0.06);">
-            Starting portfolio equally weighted<br> backtest performance: {eq_perf_value}%
-        </div>
-        """,
-        unsafe_allow_html=True,
-        )
 
     # Store results for sticky display
     st.session_state.results = {
@@ -275,6 +265,7 @@ if run_btn:
         "summ_bt": summ_bt,
         "horizon": horizon,
         "rebal_choice": rebal_choice,
+        "eq_perf_value": eq_perf_value,
     }
 
 # ---------- Display ----------
@@ -312,9 +303,18 @@ else:
     prices, frontier, weights = res["prices"], res["frontier"], res["weights"]
     metrics, vr, mc_stats = res["metrics"], res["vr"], res["mc_stats"]
     eq_bt, summ_bt = res["eq_bt"], res["summ_bt"]
-    horizon, rebal_choice = res["horizon"], res["rebal_choice"]
+    horizon, rebal_choice, eq_perf_value = res["horizon"], res["rebal_choice"],res["eq_perf_value"]
 
-    
+    # Title of first graph showing equally weighted starting potfolio backtest performance
+    st.markdown(
+    f"""
+    <div style="background: white; padding: 4px 12px; margin: 4px 0 18px 0; text-align: center;
+                font-size: 2.0rem; font-weight: bold; color: black; box-shadow: 0 2px 6px rgba(0,0,0,0.06);">
+        Starting portfolio equally weighted<br> backtest performance: {eq_perf_value}%
+    </div>
+    """,
+    unsafe_allow_html=True,
+    )    
 
     fig = go.Figure()
     for c in prices.columns:
