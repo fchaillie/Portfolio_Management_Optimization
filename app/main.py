@@ -530,7 +530,7 @@ else:
         yaxis_title="Equity Value (Base 100)",
         yaxis=dict(
             range=[0, y_max],
-            tickvals=list(range(0, y_max + 100, 100)),
+            #tickvals=list(range(0, y_max + 100, 100)),
             tickformat=".0f",
             showgrid=True,
             zeroline=True,
