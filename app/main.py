@@ -200,8 +200,16 @@ if run_btn:
         cum_return = (1 + eq_portfolio_returns).prod() - 1
         eq_perf_value = round(cum_return * 100, 1)
         
-        if rets.shape[0] < 3:
-            st.error("Not enough clean return data after filtering.")
+        if rets.shape[0] < 5:
+            st.markdown(
+            """
+            <div style="background-color:white; padding:10px; border-radius:5px; 
+                        font-weight:bold; color:black; text-align:center;">
+                Please choose a period bigger than a week.
+            </div>
+            """,
+            unsafe_allow_html=True
+            )
             st.stop()
 
         # Choose optimizer
