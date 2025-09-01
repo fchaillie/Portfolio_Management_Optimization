@@ -6,7 +6,7 @@ Whether you're a trader, an investor or a recruiter curious about my technical &
 
 ---
 
-## 🌐 [Live Demo)](https://portfolio-optimizer-fchaillie.fly.dev)
+## 🌐 [Live Demo](https://portfolio-optimizer-fchaillie.fly.dev)
 
 ---
 
