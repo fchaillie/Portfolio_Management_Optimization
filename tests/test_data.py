@@ -21,7 +21,7 @@ def test_get_price_data_returns_dataframe(mock_get):
     mock_get.return_value = mock_df
 
     # Call the function (mocked)
-    df = get_price_data(tickers, start="2022-01-01", end="2022-01-10")
+    df = data_module.get_price_data(tickers, start="2022-01-01", end="2022-01-10")
 
     # Assertions
     assert isinstance(df, pd.DataFrame)
