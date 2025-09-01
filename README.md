@@ -22,21 +22,25 @@ Whether you're a trader, an investor or a recruiter curious about my technical &
 ---
 
 ## 🖼️ Screenshots
+ 
+# Dashboard home
 
-📌 Suggested places to add visuals:  
-- Dashboard home
 ![alt text](assets/image-1.png)
 
-- Equally weighted chosen portfolio backtest performance
+# Equally weighted chosen portfolio backtest performance
+
 ![alt text](assets/image-2.png)
 
-- Efficient Frontier
+# Efficient Frontier
+
 ![alt text](assets/image-4.png)
 
-- Optimized portfolio backtest performance 
+# Optimized portfolio backtest performance 
+
 ![alt text](assets/image-5.png)
 
-- Optimized portfolio backtest and forward looking (Monte Carlo) metrics 
+# Optimized portfolio backtest and forward looking (Monte Carlo) metrics 
+
 ![alt text](assets/image-6.png)
 
 
