@@ -547,7 +547,7 @@ else:
         <div style="display:flex; justify-content:center; margin-top: 0px;">
             <div style="background-color: white; padding: 0px 3px; font-size: 1rem; font-weight: bold; color: black;
                         border-radius: 0px; box-shadow: 0 2px 6px rgba(0,0,0,0.06); text-align: center; display:inline-block;">
-            This graph represents the weights of the optimal portfolio with the stocks AND options you chose.
+            This graph represents the weights of the optimal portfolio for the stocks and the options you chose.
             </div>
         </div>
         """,
