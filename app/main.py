@@ -181,7 +181,7 @@ if run_btn:
         st.error("Your ticker list is empty.")
         st.stop()
 
-    with st.spinner("Fetching data & computing..."):
+    #with st.spinner("Fetching data & computing..."):
         # Fetch prices and compute daily returns
         prices = get_price_data(
             tickers,
