@@ -80,7 +80,7 @@ def optimize_min_cvar(returns, beta=0.95, max_w=1.0):
     ec.min_cvar()
     return ec.clean_weights(1e-3)
 
-
+# Function not used in the dashboard now
 def optimize_hrp(returns: pd.DataFrame) -> dict:
     """
     Hierarchical Risk Parity weights (via riskfolio-lib).
