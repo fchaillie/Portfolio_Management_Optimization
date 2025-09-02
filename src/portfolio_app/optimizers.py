@@ -81,20 +81,20 @@ def optimize_min_cvar(returns, beta=0.95, max_w=1.0):
     return ec.clean_weights(1e-3)
 
 
-# def optimize_hrp(returns: pd.DataFrame) -> dict:
-#     """
-#     Hierarchical Risk Parity weights (via riskfolio-lib).
-#     We post-normalize in case of tiny negatives from numerical noise.
-#     """
-#     if not HAS_RISKFOLIO:
-#         raise ImportError("riskfolio-lib not installed")
+def optimize_hrp(returns: pd.DataFrame) -> dict:
+    """
+    Hierarchical Risk Parity weights (via riskfolio-lib).
+    We post-normalize in case of tiny negatives from numerical noise.
+    """
+    if not HAS_RISKFOLIO:
+        raise ImportError("riskfolio-lib not installed")
 
-#     # Lazy import: only import when HRP is requested
-#     import riskfolio as rp
+    # Lazy import: only import when HRP is requested
+    import riskfolio as rp
 
-#     port = rp.Portfolio(returns=returns)
-#     port.assets_stats(method_mu="hist", method_cov="ledoit", d=0.94)
-#     w = port.hrp_optimization(model="Classic", rm="MV")[0].to_dict()
-#     w = {k: float(v) for k, v in w.items()}
-#     s = sum(max(v, 0) for v in w.values())
-#     return {k: (max(v, 0) / s if s else 0.0) for k, v in w.items()}
+    port = rp.Portfolio(returns=returns)
+    port.assets_stats(method_mu="hist", method_cov="ledoit", d=0.94)
+    w = port.hrp_optimization(model="Classic", rm="MV")[0].to_dict()
+    w = {k: float(v) for k, v in w.items()}
+    s = sum(max(v, 0) for v in w.values())
+    return {k: (max(v, 0) / s if s else 0.0) for k, v in w.items()}
